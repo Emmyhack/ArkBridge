@@ -1,0 +1,15 @@
+node_modules
+dist
+.next
+out
+.turbo
+coverage
+pnpm-lock.yaml
+packages/contracts/lib
+packages/contracts/out
+packages/contracts/cache
+packages/contracts/broadcast
+deployments/**/*.json
+
+# Solidity is formatted by `forge fmt`.
+*.sol

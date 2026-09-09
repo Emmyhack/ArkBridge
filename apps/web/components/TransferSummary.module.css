@@ -1,0 +1,93 @@
+.wrap {
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+  background: var(--ark-surface);
+  overflow: hidden;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ark-space-3);
+  width: 100%;
+  padding: var(--ark-space-3) var(--ark-space-4);
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ark-transition);
+}
+
+.bar:hover {
+  background: rgb(255 255 255 / 3%);
+}
+
+.lead,
+.trail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  min-width: 0;
+}
+
+/* A standing fact about the route, not a state that changes as you type — so
+   it is a quiet outline, not a status colour. */
+.badge {
+  flex: none;
+  padding: 3px var(--ark-space-2);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-sm);
+  font-size: var(--ark-text-caption);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ark-text-secondary);
+}
+
+.headline {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eta {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+  white-space: nowrap;
+}
+
+.chevron {
+  display: grid;
+  place-items: center;
+  color: var(--ark-text-muted);
+  transition: transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+.wrap[data-open="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.panel {
+  padding: 0 var(--ark-space-4) var(--ark-space-4);
+  border-top: 1px solid var(--ark-border);
+  display: grid;
+  gap: var(--ark-space-4);
+  animation: ark-rise var(--ark-duration-base) var(--ark-ease-out) both;
+}
+
+.panel > * {
+  margin-top: var(--ark-space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+
+  .panel {
+    animation: none;
+  }
+}

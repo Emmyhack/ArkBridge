@@ -1,0 +1,82 @@
+{
+  "chains": {
+    "arkdevnet": {
+      "name": "arkdevnet",
+      "displayName": "Ark Constellation Devnet",
+      "protocol": "ethereum",
+      "chainId": 9000,
+      "domainId": 9000,
+      "rpcUrls": [
+        {
+          "http": "https://evm.34.60.137.196.sslip.io"
+        }
+      ],
+      "mailbox": "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68",
+      "merkleTreeHook": "0x454637b786478EB76aA93F8ad68101e90ba5d97D",
+      "validatorAnnounce": "0x72bEd5A467DA40f97E6c0e2E1F0f75533F484b88",
+      "interchainGasPaymaster": "0x0000000000000000000000000000000000000000",
+      "index": {
+        "from": 207577,
+        "chunk": 999
+      },
+      "blocks": {
+        "estimateBlockTime": 3,
+        "reorgPeriod": 1,
+        "confirmations": 1
+      }
+    },
+    "sepolia": {
+      "name": "sepolia",
+      "displayName": "Sepolia",
+      "protocol": "ethereum",
+      "chainId": 11155111,
+      "domainId": 11155111,
+      "rpcUrls": [
+        {
+          "http": "https://ethereum-sepolia-rpc.publicnode.com"
+        }
+      ],
+      "mailbox": "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766",
+      "merkleTreeHook": "0x4917a9746A7B6E0A57159cCb7F5a6744247f2d0d",
+      "validatorAnnounce": "0xE6105C59480a1B7DD3E4f28153aFdbE12F4CfCD9",
+      "interchainGasPaymaster": "0x6f2756380FD49228ae25Aa7F2817993cB74Ecc56",
+      "index": {
+        "from": 11632506,
+        "chunk": 999
+      },
+      "blocks": {
+        "estimateBlockTime": 12,
+        "reorgPeriod": 2,
+        "confirmations": 1
+      }
+    },
+    "basesepolia": {
+      "name": "basesepolia",
+      "displayName": "Base Sepolia",
+      "protocol": "ethereum",
+      "chainId": 84532,
+      "domainId": 84532,
+      "rpcUrls": [
+        {
+          "http": "https://base-sepolia-rpc.publicnode.com"
+        },
+        {
+          "http": "https://sepolia.base.org"
+        }
+      ],
+      "mailbox": "0x6966b0E55883d49BFB24539356a2f8A673E02039",
+      "merkleTreeHook": "0x86fb9F1c124fB20ff130C41a79a432F770f67AFD",
+      "validatorAnnounce": "0x20c44b1E3BeaDA1e9826CFd48BeEDABeE9871cE9",
+      "interchainGasPaymaster": "0x28B02B97a850872C4D33C3E024fab6499ad96564",
+      "index": {
+        "from": 46392000,
+        "chunk": 999
+      },
+      "blocks": {
+        "estimateBlockTime": 2,
+        "reorgPeriod": 5,
+        "confirmations": 1
+      }
+    }
+  }
+}

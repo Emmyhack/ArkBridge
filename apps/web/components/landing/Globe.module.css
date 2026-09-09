@@ -1,0 +1,71 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/*
+ * Atmosphere.
+ *
+ * A flat 6% fill read as an olive plate behind the globe — a disc with a hard
+ * edge, which is the one thing an atmosphere must not have. An SVG radial
+ * gradient does not inherit CSS custom properties usefully here, so the effect
+ * is built from a blurred stroke instead: a wide, very faint ring on the limb,
+ * feathered outward.
+ */
+.atmosphere {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ark-primary) 10%, transparent);
+  stroke-width: 26;
+  filter: blur(18px);
+}
+
+.dots circle {
+  fill: var(--ark-primary);
+}
+
+.limb {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ark-primary) 28%, transparent);
+  stroke-width: 1;
+}
+
+/*
+ * The flowing arcs. `stroke-dasharray` sets the pattern; animating
+ * `stroke-dashoffset` walks it along the path. The 1000-unit offset in the
+ * keyframe is far longer than any of these paths, which is what makes the loop
+ * seamless — the pattern has repeated many times before the animation restarts.
+ */
+.arcs path {
+  fill: none;
+  stroke: var(--ark-primary);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 3 9;
+  opacity: 0.55;
+  animation: ark-dash-flow 18s linear infinite;
+}
+
+.pipCore {
+  fill: var(--ark-primary);
+}
+
+.pipHalo {
+  fill: color-mix(in srgb, var(--ark-primary) 18%, transparent);
+  animation: ark-breathe 6s var(--ark-ease) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arcs path,
+  .pipHalo {
+    animation: none;
+  }
+}

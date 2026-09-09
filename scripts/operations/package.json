@@ -1,0 +1,14 @@
+{
+  "name": "@arkbridge/operations-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Operational tooling: solvency, agent balances, health reports.",
+  "type": "module",
+  "scripts": {
+    "solvency": "node check-solvency.mjs",
+    "balances": "node check-agent-balances.mjs"
+  },
+  "dependencies": {
+    "viem": "^2.40.0"
+  }
+}

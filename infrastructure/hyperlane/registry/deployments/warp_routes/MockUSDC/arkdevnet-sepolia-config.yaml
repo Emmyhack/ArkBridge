@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../schema.json
+tokens:
+  - addressOrDenom: "0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C"
+    chainName: arkdevnet
+    connections:
+      - token: ethereum|sepolia|0x454637b786478EB76aA93F8ad68101e90ba5d97D
+    decimals: 6
+    name: Mock USD Coin
+    standard: EvmHypSynthetic
+    symbol: MockUSDC
+    tokenType: synthetic
+  - addressOrDenom: "0x454637b786478EB76aA93F8ad68101e90ba5d97D"
+    chainName: sepolia
+    collateralAddressOrDenom: "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742"
+    connections:
+      - token: ethereum|arkdevnet|0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C
+    decimals: 6
+    name: Mock USD Coin
+    standard: EvmHypCollateral
+    symbol: MockUSDC
+    tokenType: collateral

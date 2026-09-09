@@ -1,0 +1,420 @@
+{
+  "environment": "testnet",
+  "chain": "ark-devnet",
+  "chainId": 9000,
+  "hyperlaneDomainId": 9000,
+  "contracts": {
+    "domainRoutingIsmFactory": "0x58Dd7282e9bE3de31080Cc7D4a70D2f144b35d33",
+    "incrementalDomainRoutingIsmFactory": "0x6DDF30F6bcaa7F5B24CB61Ee13fC1258FD7541C6",
+    "interchainAccountRouter": "0x1D693876F102418BfA24b03bBE8cb0fB80AC260F",
+    "mailbox": "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68",
+    "merkleTreeHook": "0x454637b786478EB76aA93F8ad68101e90ba5d97D",
+    "protocolFee": "0x21D69525c16B537528815FD0A85acc0321515FF4",
+    "proxyAdmin": "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742",
+    "quotedCalls": "0x44894bf41Ac04F0BF1323271e9818948c725d8ba",
+    "staticAggregationHookFactory": "0xBCf0DBe9E1001697477Cd1AfEc47FB8261fde6F0",
+    "staticAggregationIsmFactory": "0x06d07042D3FC6E02b8AAad05cF28A8E31341b755",
+    "staticMerkleRootMultisigIsmFactory": "0x3aa0a621E24B1C0c6CB57238513FfDDD18eD6e9E",
+    "staticMerkleRootWeightedMultisigIsmFactory": "0xAc5B6C70B66e8140C81a1f0856619068f12547A1",
+    "staticMessageIdMultisigIsmFactory": "0xbA73Ae96205Fa5bee35A659e148Cb1f4cA6Fa913",
+    "staticMessageIdWeightedMultisigIsmFactory": "0xdf938555b7457507bB4C4848CC565C016274E2d8",
+    "testRecipient": "0x65c150152EbB78293DC63d83f989Af5ED9D30132",
+    "trustedRelayerIsm": "0x0b3a574770C13Bf1c9eC45683E6e8A1796318206",
+    "validatorAnnounce": "0x72bEd5A467DA40f97E6c0e2E1F0f75533F484b88",
+    "messageIdMultisigIsm": "0xBFf2B16C6b24bd3E114C950D03bD6f3726577A59",
+    "domainRoutingIsm": "0xa3D9AAdD4fDfD51a1F6C784e422c19347e5A1522",
+    "arkValidatorMultisigIsm": "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6",
+    "mockusdcSynthetic": "0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C",
+    "mockusdcBaseSynthetic": "0xF015F2E8C9647BFF16FA6E3BEEc2AA89A59D1033",
+    "rateLimiter": "0x4Ee678f4fb198a77b12C424777fb5D40181c25ED",
+    "pauseController": "0x1b18751D3bb2022De1f347e5fe347245478A3a0f",
+    "guard": "0xbba9B50B24F101d4E76676BEffcFB0D3FbC08663",
+    "guardHook": "0x3155E3658841a0B9Ea59F3Cb3A55040481ad1cF7",
+    "guardIsm": "0xcA70701657a9791B0A922266876D7aF653575BDC",
+    "recoveryIsm": "0x734F019b2B9bD5BD331e455c8D4Fe7159625DCA6"
+  },
+  "contractDetails": {
+    "domainRoutingIsmFactory": {
+      "address": "0x58Dd7282e9bE3de31080Cc7D4a70D2f144b35d33",
+      "deploymentTx": "0x03ff0f2eb846858b38c19e75863f46285cf8b45b3b5589909b71e8a79c373df7",
+      "block": 207563,
+      "gasUsed": 1720361
+    },
+    "incrementalDomainRoutingIsmFactory": {
+      "address": "0x6DDF30F6bcaa7F5B24CB61Ee13fC1258FD7541C6",
+      "deploymentTx": "0xc8d400572209432432ce8819c8e61788721c46d91aec0b034c726318a9dc6c3b",
+      "block": 207565,
+      "gasUsed": 1624403
+    },
+    "interchainAccountRouter": {
+      "address": "0x1D693876F102418BfA24b03bBE8cb0fB80AC260F",
+      "deploymentTx": "0x0c91ff3379285f5a82ac219043a682096fe74b2d06c578d334b89d75f4b9311f",
+      "block": 207589,
+      "gasUsed": 6560467
+    },
+    "mailbox": {
+      "address": "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68",
+      "deploymentTx": "0x72d7eaa6f0dab6778d50f76ea9a3e12abc7bb27ce2bfc80eafd9277170b4909d",
+      "block": 207577,
+      "gasUsed": 859516
+    },
+    "merkleTreeHook": {
+      "address": "0x454637b786478EB76aA93F8ad68101e90ba5d97D",
+      "deploymentTx": "0xe4b970d73d34cddead5a06dd75b463d5462010c785212069edc16d334cde748e",
+      "block": 207580,
+      "gasUsed": 1477287
+    },
+    "protocolFee": {
+      "address": "0x21D69525c16B537528815FD0A85acc0321515FF4",
+      "deploymentTx": "0xcfde0e0b7b0e43327ea7aa5e8426004e7f5abcac371d074bba9d0c49febd0894",
+      "block": 207582,
+      "gasUsed": 1042680
+    },
+    "proxyAdmin": {
+      "address": "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742",
+      "deploymentTx": "0x5e5a2bab50348c4be581227ee1399bd35f6d2d175a8173207b16801acff4c1f6",
+      "block": 207572,
+      "gasUsed": 532551
+    },
+    "quotedCalls": {
+      "address": "0x44894bf41Ac04F0BF1323271e9818948c725d8ba",
+      "deploymentTx": "0x6b8cbdcf5f3222409f583fb5e893f4ea83d2d8f0ca01004d9c195664c55391a2",
+      "block": 207595,
+      "gasUsed": 2574712
+    },
+    "staticAggregationHookFactory": {
+      "address": "0xBCf0DBe9E1001697477Cd1AfEc47FB8261fde6F0",
+      "deploymentTx": "0x067e2e387c944c9e7b6bf8fb8b976f67317f08e359a375f1d1f78eb926cea6a0",
+      "block": 207561,
+      "gasUsed": 1309415
+    },
+    "staticAggregationIsmFactory": {
+      "address": "0x06d07042D3FC6E02b8AAad05cF28A8E31341b755",
+      "deploymentTx": "0xc74739531a782a3e44bb5e2d367a6f0128cbdb67a6fd54aca0f44e763d1197c2",
+      "block": 207559,
+      "gasUsed": 948158
+    },
+    "staticMerkleRootMultisigIsmFactory": {
+      "address": "0x3aa0a621E24B1C0c6CB57238513FfDDD18eD6e9E",
+      "deploymentTx": "0x5f2ece2116516853d224764f158717f576e540a12a8cc432a1c49888d3233ac8",
+      "block": 207555,
+      "gasUsed": 1395378
+    },
+    "staticMerkleRootWeightedMultisigIsmFactory": {
+      "address": "0xAc5B6C70B66e8140C81a1f0856619068f12547A1",
+      "deploymentTx": "0xd0af80bca700a8a19166142bfe51759ccfc131e1522ec979a9868c207d2f6e17",
+      "block": 207567,
+      "gasUsed": 1484482
+    },
+    "staticMessageIdMultisigIsmFactory": {
+      "address": "0xbA73Ae96205Fa5bee35A659e148Cb1f4cA6Fa913",
+      "deploymentTx": "0x0a0bf70b52d9f54ce525c705342a958bdb766df8c82907c2cbc71164c09e3379",
+      "block": 207557,
+      "gasUsed": 1261551
+    },
+    "staticMessageIdWeightedMultisigIsmFactory": {
+      "address": "0xdf938555b7457507bB4C4848CC565C016274E2d8",
+      "deploymentTx": "0x71c9b5f3caabe67d1d97c0d412609370f0cbfd4825735b6930d3f0eed343c2d7",
+      "block": 207570,
+      "gasUsed": 1354125
+    },
+    "testRecipient": {
+      "address": "0x65c150152EbB78293DC63d83f989Af5ED9D30132",
+      "deploymentTx": "0xe2f68bcb2347dc8cf323e7e71d394e843fa324c7b519d5d5dd5a07f9be9549a3",
+      "block": 207597,
+      "gasUsed": 633361
+    },
+    "trustedRelayerIsm": {
+      "address": "0x0b3a574770C13Bf1c9eC45683E6e8A1796318206",
+      "deploymentTx": "0x3c95884b4ae60b0a4d883bc408723ec65e36a050330993d1ff406b59f0890050",
+      "block": 207579,
+      "gasUsed": 293410
+    },
+    "validatorAnnounce": {
+      "address": "0x72bEd5A467DA40f97E6c0e2E1F0f75533F484b88",
+      "deploymentTx": "0xd06026fba3637049e4eeca19b818b62453ea94169bc9942879d4c3d27ce0a84d",
+      "block": 207592,
+      "gasUsed": 1364520
+    },
+    "messageIdMultisigIsm": {
+      "address": "0xBFf2B16C6b24bd3E114C950D03bD6f3726577A59",
+      "deploymentTx": "0x4e38a284d6405e14cd9e31338b398961afd46ca385543f52370472ded7fab5ad",
+      "block": 208108,
+      "gasUsed": 101380
+    },
+    "domainRoutingIsm": {
+      "address": "0xa3D9AAdD4fDfD51a1F6C784e422c19347e5A1522",
+      "deploymentTx": "0xc090b91069430f2adf4e412455cf1ecd1c14ec5518cfa4f8f247110512d92638",
+      "block": 208116,
+      "gasUsed": 283398
+    },
+    "arkValidatorMultisigIsm": {
+      "address": "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6",
+      "deploymentTx": "0x3ea7e702362a240493a2a8993a8eeb4b31b370c59dadca509daac91f4cf2e04a",
+      "block": 219300,
+      "gasUsed": 115219
+    },
+    "mockusdcSynthetic": {
+      "address": "0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C",
+      "block": 221000,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "note": "Deployed by `hyperlane warp deploy`, which does not surface per-contract tx hashes. Address verified on chain; tx hash recorded as zero rather than invented."
+    },
+    "mockusdcBaseSynthetic": {
+      "address": "0xF015F2E8C9647BFF16FA6E3BEEc2AA89A59D1033",
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "block": 221900,
+      "note": "Deployed by `hyperlane warp deploy`, which does not surface per-contract tx hashes."
+    },
+    "rateLimiter": {
+      "address": "0x4Ee678f4fb198a77b12C424777fb5D40181c25ED",
+      "deploymentTx": "0x703a4e61439f88096631144466bcb48d102a3a1df940a4fc46f0c548630050a9",
+      "block": 228865
+    },
+    "pauseController": {
+      "address": "0x1b18751D3bb2022De1f347e5fe347245478A3a0f",
+      "deploymentTx": "0xce01f66bd3c85e0d21177b3da65a5a6844cb7441d0409c9336945ebe182518cc",
+      "block": 228866
+    },
+    "guard": {
+      "address": "0xbba9B50B24F101d4E76676BEffcFB0D3FbC08663",
+      "deploymentTx": "0x3bc7b60978af142d4a488e46e4eab4eafe26edf38c00d4dd11f516e82c0885cc",
+      "block": 228867
+    },
+    "guardHook": {
+      "address": "0x3155E3658841a0B9Ea59F3Cb3A55040481ad1cF7",
+      "block": 231000,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "guardIsm": {
+      "address": "0xcA70701657a9791B0A922266876D7aF653575BDC",
+      "block": 231000,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "recoveryIsm": {
+      "address": "0x734F019b2B9bD5BD331e455c8D4Fe7159625DCA6",
+      "block": 232000,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "hyperlane": {
+    "packageVersion": "12.1.0",
+    "messageVersion": 3,
+    "cliVersion": "44.0.2",
+    "registryVersion": "26.1.0"
+  },
+  "deployer": "0xF031363A7FDdaFDcea062adc7421353A95F16420",
+  "block": 207597,
+  "timestamp": 1788494020,
+  "commit": "5fdd332034e2953c90f2fd75159d7bbfcba99e31",
+  "notes": {
+    "deploymentBlockRange": [
+      207555,
+      207597
+    ],
+    "totalGasUsed": 26436377,
+    "totalCostKash": "0.032175869625",
+    "defaultIsm": "trustedRelayerIsm \u2014 DEVNET BOOTSTRAP ONLY, NOT A SECURITY MODEL. Replaced with a multisig ISM in Phase 3. No token route may be enabled while this is the default.",
+    "domainIdRationale": "9000, chosen to equal the EVM chain id. Verified pre-deploy: fits uint32; unclaimed across all 348 chains in @hyperlane-xyz/registry@26.1.0; matches live eth_chainId. Asserted post-deploy against Mailbox.localDomain().",
+    "interchainGasPaymaster": "Decided: none deployed. requiredHook is protocolFee at 0, so quoteDispatch returns 0 and the self-funded devnet relayer absorbs destination gas. Acceptable while ArkBridge operates the only relayer. Before any public testnet an IGP must be added, otherwise users pay nothing for destination gas and relayer funding becomes an unbounded liability.",
+    "sourceVerification": "Deferred for devnet. Bytecode presence is verified on-chain at all 17 addresses and the deployed configuration is verified by `hyperlane core check`. Explorer source verification adds human readability, not correctness guarantees, and these are unmodified upstream Hyperlane contracts. Required before mainnet, where it is a precondition of external review.",
+    "interchainAccountRouter": "Deployed by the standard core deployment; ArkBridge does not use Interchain Accounts. Left inert with empty remoteRouters. Its commitmentIsm is an offchainLookupIsm pointing at a Hyperlane-operated endpoint \u2014 an external dependency of the ICA feature only. No ArkBridge transfer path touches it."
+  },
+  "verification": {
+    "localDomainAssertion": {
+      "configured": 9000,
+      "onChain": 9000,
+      "match": true
+    },
+    "coreCheck": {
+      "tool": "hyperlane core check",
+      "result": "No violations found",
+      "note": "proxyAdmin and interchainAccountRouter are declared in the core config so this check reports a clean diff and can be used as a drift detector."
+    },
+    "genericMessageTest": {
+      "note": "Build spec \u00a7130 \u2014 a generic message verified end-to-end before any token bridging. Loopback: arkdevnet -> arkdevnet, self-relayed by the trusted relayer.",
+      "messageId": "0xececf2fb6208c8f30a565c208fa51d9d0b21fc1d97d5f914de53ccf7d9aaab8c",
+      "deliveryTx": "0xd0272c8fc0ce773f555f39b5c939205bf3b8bdce42aea44552329bef945d8c38",
+      "deliverySeconds": 12,
+      "mailboxNonceAfter": 1,
+      "delivered": true,
+      "merkleTreeCountAfter": 1,
+      "merkleTreeRootAfter": "0xa91b35bde0c76b72906d5f46022e125b4efe62378a6b37a4a7ee760ea35101bc"
+    },
+    "bytecodePresent": "all 17 addresses",
+    "coreCheckAfterPhase3a": {
+      "tool": "hyperlane core check",
+      "result": "No violations found"
+    }
+  },
+  "phase3": {
+    "status": "COMPLETE for Ark <-> Sepolia; BSC Testnet pending funding",
+    "defaultIsmChange": {
+      "from": "0x0b3a574770C13Bf1c9eC45683E6e8A1796318206 (trustedRelayerIsm)",
+      "to": "0xa3D9AAdD4fDfD51a1F6C784e422c19347e5A1522 (domainRoutingIsm)",
+      "tx": "0x8e4b84a7c07e1281d022bd8864578b4480277fd74f840187e421288d296ce04f",
+      "block": 208137
+    },
+    "inboundSecurity": {
+      "sepolia": {
+        "domain": 11155111,
+        "ism": "messageIdMultisigIsm",
+        "validators": [
+          "0x3c659E0FE8d01B80d7828b421630085777346e7c"
+        ],
+        "threshold": 1
+      },
+      "bsctestnet": {
+        "domain": 97,
+        "ism": "messageIdMultisigIsm",
+        "validators": [
+          "0x3c659E0FE8d01B80d7828b421630085777346e7c"
+        ],
+        "threshold": 1
+      },
+      "note": "Hyperlane's canonical testnet validator sets, read off the live chains (sepolia's set from bsctestnet's ISM tree and vice versa) rather than copied from docs. BOTH ARE 1-of-1 AND BOTH ARE THE SAME KEY. Compromise of that one key forges messages from both origins into Ark. Accepted knowingly for devnet; must not carry to mainnet.",
+      "unregisteredOriginsRejected": "The routing ISM reverts with 'No ISM found for origin' for any domain not listed, including Ark's own 9000. INV-15 enforced at the ISM layer."
+    },
+    "outboundSecurity": {
+      "status": "LIVE AND VERIFIED",
+      "validators": {
+        "set": [
+          "0xf3BbAECB73b04dCDd0c3F8bC92bd2ccE86ff9Eb4",
+          "0xb328A0B31016eE317f946a52cc2c19543f09a89A",
+          "0xdcB422af44b896C9Cbdb61B820157e2dCd4C87D8"
+        ],
+        "threshold": 2,
+        "announcedOn": "0x72bEd5A467DA40f97E6c0e2E1F0f75533F484b88",
+        "storageLocations": [
+          "file:///checkpoints/validator-1",
+          "file:///checkpoints/validator-2",
+          "file:///checkpoints/validator-3"
+        ],
+        "warning": "Three validators on one Docker host is a test topology. A 2-of-3 threshold means nothing when one machine holds all three keys and one daemon can stop all three processes."
+      },
+      "ismOnSepolia": "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd",
+      "endToEndTest": {
+        "note": "Build spec \u00a7131 \u2014 Ark -> Sepolia message verified against ArkBridge's own validator set.",
+        "dispatchTxArk": "0x39cd905c5910aaa10b93551669145aca4479ab53a770400a37df4d1f7b7ba9f3",
+        "messageId": "0xfa6d0e174eef3a4125533b33b7deda8930bf3471538a1a95e04e59b3715cf53b",
+        "recipientOnSepolia": "0x06d07042D3FC6E02b8AAad05cF28A8E31341b755",
+        "sepoliaMailboxDelivered": true,
+        "recipientIsmUsed": "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd",
+        "handledCount": 1,
+        "lastOrigin": 9000,
+        "lastMessage": "ArkBridge phase 3 outbound test"
+      }
+    },
+    "inboundStatus": {
+      "configured": true,
+      "working": true,
+      "ism": "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6",
+      "validators": [
+        "0xf3BbAECB73b04dCDd0c3F8bC92bd2ccE86ff9Eb4",
+        "0xb328A0B31016eE317f946a52cc2c19543f09a89A",
+        "0xdcB422af44b896C9Cbdb61B820157e2dCd4C87D8"
+      ],
+      "threshold": 2,
+      "migratedFrom": "Hyperlane's 1-of-1 Sepolia set (0x3c659E0F...46e7c), replaced in tx 0x6163a5c427b2e197f9af0815afe15470b7708ba43cad5a6f548b5794334e5c8e. That set shared its single key with BSC Testnet's, so one compromise forged both origins; and its checkpoints live in a GCS bucket our relayer has no credentials for, so inbound could not reach quorum at all. Running our own validators fixed both.",
+      "endToEndTest": {
+        "note": "Build spec \u00a7131 \u2014 Sepolia -> Ark, verified by ArkBridge's own validator set.",
+        "dispatchTxSepolia": "0x3411c97dc34f7dc6a5bc90a76f4e4176c0ba6d025c1efeb2428f8cdc923fa783",
+        "sepoliaBlock": 11633866,
+        "recipientOnArk": "0x65c150152EbB78293DC63d83f989Af5ED9D30132",
+        "lastData": "ArkBridge inbound via ArkBridge validators",
+        "routingIsmModuleForSepolia": "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6"
+      },
+      "operationalNote": "A validator signs checkpoints as it advances; it cannot retroactively sign an index it never observed. A message dispatched before a validator set goes live is therefore unverifiable by that set \u2014 which is why the first inbound test message stayed pending and a fresh one was required. Relevant to any future validator rotation: rotate before traffic, or accept that in-flight messages need the outgoing set."
+    },
+    "recipientIsmFinding": "A recipient that implements interchainSecurityModule() OVERRIDES the Mailbox default. Ark's testRecipient still pointed at the Phase 2 trustedRelayerIsm after the default was replaced, and was only secured by explicitly zeroing it (tx 0xce9402362765e2cdcf024d31dc6f3e830303091d145c0d6fb7f12d78a6e23eed). Warp routes use this same mechanism, so every Phase 4 router's ISM must be asserted on-chain, never assumed to inherit the default.",
+    "bscTestnetStatus": "Still on Hyperlane's 1-of-1 set, which shares its key with the Sepolia set that was just replaced. No BSC route may be enabled until BSC validators are migrated the same way. Blocked on BNB at 0x3f2704f48c1712072C734943BE5d68173B2B9B34."
+  },
+  "tokens": {
+    "sepolia-mockusdc": {
+      "token": "0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C",
+      "router": "0x23AF193fa1fDa63e7396B185a22Ab83dDF8d2c6C"
+    },
+    "base-sepolia-mockusdc": {
+      "token": "0xF015F2E8C9647BFF16FA6E3BEEc2AA89A59D1033",
+      "router": "0xF015F2E8C9647BFF16FA6E3BEEc2AA89A59D1033"
+    }
+  },
+  "phase4": {
+    "status": "COMPLETE for Sepolia <-> Ark MockUSDC",
+    "note": "HypERC20 synthetic. The token and router are the same contract: a synthetic warp route IS the ERC20, minting against collateral locked on the origin. There is no separate underlying on Ark, which is why the UI must never present it as issuer-native USDC.",
+    "ismPinned": "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6",
+    "roundTrip": {
+      "lockAndMint": {
+        "amount": "1000000000",
+        "sepoliaCollateralAfter": "1000000000",
+        "arkSyntheticSupplyAfter": "1000000000"
+      },
+      "burnAndRelease": {
+        "amount": "400000000",
+        "arkBurnTx": "0x3b203aeb7aa79e8176791607c4cd91e4952b566c70f4c31326da0f6f657b8891",
+        "sepoliaCollateralAfter": "600000000",
+        "arkSyntheticSupplyAfter": "600000000"
+      },
+      "solvency": "collateral 600000000 == synthetic 600000000 at rest \u2014 INV-07 holds",
+      "inFlightObservation": "Mid-transfer the synthetic was already burned (600000000) while collateral was still locked (1000000000). A solvency check comparing two naive snapshots would read that as over-collateralised, and the opposite direction as INSOLVENT. scripts/operations/check-solvency.ts must account for in-flight value \u2014 this is \u00a7103 observed on a live route, not a theoretical concern."
+    }
+  },
+  "phase6": {
+    "status": "LIVE \u2014 safety layer bound to both working routes",
+    "contracts": {
+      "rateLimiter": "0x4Ee678f4fb198a77b12C424777fb5D40181c25ED",
+      "pauseController": "0x1b18751D3bb2022De1f347e5fe347245478A3a0f",
+      "guard": "0xbba9B50B24F101d4E76676BEffcFB0D3FbC08663",
+      "guardHook": "0x2d8231B377A0f698a74D17646907bE9421b36517",
+      "guardIsm": "0x8ed5448c529adE89b5b741b4A2882cB819274191"
+    },
+    "wiring": "Both Ark synthetic routers now use guardHook as their post-dispatch hook (outbound) and guardIsm as their interchainSecurityModule (inbound). guardIsm wraps the domainRoutingIsm (0xa3D9AAdD...5A1522), so validator verification is unchanged \u2014 the guard only adds restrictions on top and can never weaken it.",
+    "limits": {
+      "perTransaction": "1000000000",
+      "hourly": "5000000000",
+      "daily": "20000000000",
+      "note": "Devnet values chosen to exercise the logic. Production limits come from reviewed configuration."
+    },
+    "liveVerification": {
+      "limitEnforced": "A 500 MockUSDC transfer against a temporarily lowered 100 cap reverted with ExceedsPerTransaction (0x9f6ddf1c), carrying the correct routeId and amount. Cap restored after.",
+      "pauseIsolation": "With ark->sepolia paused, that route reverted with TransferPaused (0xdc8e0445) while ark->base continued to succeed. Spec \u00a789 verified on live routes, not just in tests.",
+      "balanceChecksFirstNote": "The router burns before dispatching, so an over-balance transfer reverts on the ERC20 before reaching the guard. Limit tests must therefore use an amount within balance but above the cap, or the test proves nothing.",
+      "allowanceChecksFirstNote": "Like the balance check, ERC20 allowance is consumed before the guard runs, so a collateral router with a spent allowance reverts with ERC20InsufficientAllowance (0xfb8f41b2) and the guard is never reached. Approve before testing a limit, or the test proves nothing."
+    },
+    "notBoundYet": "RESOLVED. The guard stack is now deployed and bound on all three chains \u2014 Ark, Sepolia and Base Sepolia \u2014 so limits and pauses bind on collateral locking as well as synthetic minting. Verified live on all four routers: a transfer within the cap returns a message id, one above it reverts with ExceedsPerTransaction.",
+    "wrapperLessons": {
+      "summary": "Both guard wrappers shipped broken in ways unit tests could not catch, because both failures were about how an EXTERNAL actor \u2014 the relayer \u2014 reads the contract, not about what the contract computes. Three redeploys, all the same root cause: a wrapper that does not fully impersonate what it wraps.",
+      "ismModuleType": "ArkBridgeGuardIsm.moduleType() returned NULL. A relayer reads moduleType() to decide what metadata to build, so it submitted an empty payload and the inner multisig had no signatures to verify. Delivery reverted with no useful error while the validators were signing correctly the whole time. Fixed by delegating to INNER_ISM.moduleType().",
+      "ismInterfaceForwarding": "Delegating the type alone was still wrong: reporting ROUTING made the relayer call route(message) to resolve the sub-module, which the wrapper did not implement. A wrapper must forward the whole interface implied by the type it reports. route() and validatorsAndThreshold() are now both forwarded.",
+      "hookReplacedTheMerkleTree": "The worst of the three. A router has ONE hook slot, so setHook(guardHook) REPLACED the merkleTreeHook. Dispatches kept succeeding, but nothing was inserted into the merkle tree \u2014 validators had nothing new to sign and every message became permanently unverifiable, with no error emitted anywhere. Base's tree sat frozen at 107094 while transfers appeared to work. Fixed by having the hook wrap an INNER_HOOK and always forward, gated or not. Confirmed by the tree advancing to 107095 on the next transfer.",
+      "regressionCoverage": "test_moduleTypeDelegatesToInnerIsm, test_forwardsToTheWrappedHook, test_forwardsUngatedTrafficToo, test_forwardsValueAndQuote and test_doesNotForwardWhenTheGuardRejects now pin all three behaviours."
+    },
+    "strandedValue": {
+      "status": "RECOVERED \u2014 collateral and synthetic balance exactly",
+      "amount": "40000000",
+      "cause": "Two transfers were dispatched while the Base collateral router's hook was the non-composing ArkBridgeGuardHook. Their messages never entered Base's merkleTreeHook, so no validator could sign a checkpoint covering them and no multisig proof could ever exist.",
+      "messages": [
+        "0xed1c3836d4e74c352b5ab893ac79ed766e43a8bd1ce927f9e49e0211137cb88a",
+        "0x083040186890772af76257654a21303be7bd752e071ed6e70f75cbb7ed9ba0ae"
+      ],
+      "howItWasFixed": "Deployed ArkBridgeRecoveryIsm wrapping the guard ISM, allowlisted exactly those two message ids on-chain, installed it, called Mailbox.process() with the raw message bytes recovered from Base's Dispatch logs, then restored the guard ISM. Supply moved 311000000 -> 351000000, matching locked collateral exactly.",
+      "whyNotATrustedRelayerIsm": "The obvious recovery \u2014 point the router at a trustedRelayerIsm for a moment \u2014 accepts ANY message from one key for the whole window, across every asset on that router. The recovery ISM narrows the override to two pre-named messages: everything else keeps full multisig verification the entire time it is installed, the allowlist is public and auditable before delivery, and each entry is single-use so it cannot become a standing bypass. Verified after the fact: both entries self-consumed, recoveredCount == 2.",
+      "operationalNote": "ArkBridgeRecoveryIsm remains deployed but is NOT installed on any router. It is a documented recovery tool, not part of the transfer path. Installing it is a privileged, auditable act that must be removed afterwards \u2014 as it was here.",
+      "severity": "Zero financial impact \u2014 mock tokens on a devnet. On mainnet the same hook bug would have silently locked real collateral while every transfer appeared to succeed, and recovery would have required exactly this kind of narrowly-scoped override under governance."
+    },
+    "sepoliaRestored": "Sepolia's collateral router carried BOTH defective contracts, so both directions were dead there. Restored to Hyperlane's merkleTreeHook (0x4917a974...) and the working 2-of-3 ISM (0xfA35acC5...). Sepolia is therefore correct but UNGATED \u2014 no ArkBridge limits or pauses \u2014 because redeploying the fixed guard pair there needs ~0.0016 ETH and the deployer holds ~0.0010. A working ungated route beats a gated broken one."
+  },
+  "phase7": {
+    "status": "SDK performs real testnet transfers \u2014 spec \u00a7135 satisfied",
+    "endToEnd": {
+      "route": "base-sepolia -> ark-devnet",
+      "amount": "10000000",
+      "sourceTx": "0x783f7ae02ded2e5b1593ac7d06c6889fd5203c7dbdefdeef1a5600f590a53f3c",
+      "messageId": "0xb73866cfff342580e2de11a84c9e36d82c4ea7287f86f0d966becf90fa0eee96",
+      "result": "Transfer complete",
+      "merkleTreeBefore": 107094,
+      "merkleTreeAfter": 107095
+    },
+    "inFlightObservation": "Immediately after: 350000000 collateral locked against 310000000 synthetic. The 40000000 difference is two transfers stranded by the broken hook, still in flight. A naive two-snapshot solvency check would read this as over-collateralisation; it is simply value in transit, and the reverse direction would read as insolvency."
+  }
+}

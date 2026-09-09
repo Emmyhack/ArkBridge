@@ -1,0 +1,236 @@
+.section {
+  padding: var(--ark-space-24) 0;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--ark-space-20);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ark-space-16);
+}
+
+/*
+ * The tile field.
+ *
+ * Its aspect ratio and gaps are derived from the same constants the connector
+ * geometry uses (see frictions.ts): 4×5 cells of 100 units with 16-unit gutters.
+ * Percentage gaps resolve against the corresponding axis, so expressing each
+ * one as a fraction of its own dimension makes the CSS grid and the SVG
+ * viewBox line up exactly — which is what lets the connector actually meet the
+ * centres of the tiles it joins.
+ */
+.visual {
+  position: sticky;
+  top: 18vh;
+  min-height: 64vh;
+  display: grid;
+  place-items: center;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  column-gap: calc(16 / 448 * 100%);
+  row-gap: calc(16 / 564 * 100%);
+  aspect-ratio: 448 / 564;
+  width: 100%;
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+.connector {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Behind the tiles, so the line disappears under them and appears to enter
+     each one rather than crossing over the top. */
+  z-index: 0;
+  overflow: visible;
+}
+
+/*
+ * The connector draws itself in.
+ *
+ * `stroke-dasharray` set to a length longer than any path, with the offset
+ * animating from that length to zero, is the standard line-drawing technique:
+ * the dash starts entirely off the end of the path and slides on.
+ */
+.connectorPath {
+  stroke: var(--ark-primary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  opacity: 0.75;
+  animation: ark-draw 900ms var(--ark-ease-out) forwards;
+}
+
+@keyframes ark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.tile {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: var(--ark-radius-lg);
+  border: 1px solid var(--ark-border);
+  background: color-mix(in srgb, var(--ark-surface) 70%, transparent);
+  color: var(--ark-text-muted);
+  /* Dormant tiles sit well below the reading threshold — they are texture. */
+  opacity: 0.45;
+  transition:
+    opacity var(--ark-duration-slow) var(--ark-ease),
+    border-color var(--ark-duration-slow) var(--ark-ease),
+    background-color var(--ark-duration-slow) var(--ark-ease),
+    color var(--ark-duration-slow) var(--ark-ease),
+    box-shadow var(--ark-duration-slow) var(--ark-ease);
+}
+
+.tile[data-lit="true"] {
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--ark-primary) 40%, transparent);
+  background: var(--ark-surface-elevated);
+  color: var(--ark-primary);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--ark-primary) 10%, transparent);
+}
+
+.tileLabel {
+  font-size: var(--ark-text-caption);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ark-text-secondary);
+  text-align: center;
+  padding-inline: 4px;
+}
+
+.panel {
+  display: grid;
+  gap: 12vh;
+}
+
+.copy {
+  display: grid;
+  align-content: center;
+  gap: var(--ark-space-6);
+  justify-items: start;
+  min-height: 68vh;
+  padding: var(--ark-space-10);
+  border-left: 1px solid var(--ark-border);
+  opacity: 0.3;
+  transform: translateY(28px);
+  transition:
+    opacity var(--ark-duration-slow) var(--ark-ease),
+    transform var(--ark-duration-slow) var(--ark-ease-out),
+    border-color var(--ark-duration-slow) var(--ark-ease);
+}
+
+.copy[data-active="true"] {
+  border-color: var(--ark-primary);
+  opacity: 1;
+  transform: none;
+}
+
+.step {
+  margin: 0;
+  font-family: var(--ark-font-mono);
+  font-size: var(--ark-text-caption);
+  color: var(--ark-primary);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  margin: 0 0 var(--ark-space-4);
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  color: var(--ark-text-secondary);
+}
+
+.eyebrowIcon {
+  display: grid;
+  place-items: center;
+  color: var(--ark-primary);
+}
+
+.claim {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--ark-text-lead);
+  line-height: 1.62;
+  color: var(--ark-text-secondary);
+}
+
+.action {
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ark-space-12);
+  }
+
+  .title {
+    margin-bottom: var(--ark-space-12);
+  }
+
+  .visual {
+    top: 14vh;
+    z-index: 1;
+    min-height: auto;
+    padding: var(--ark-space-6) 0;
+    background: color-mix(in srgb, var(--ark-background) 90%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .grid {
+    max-width: 300px;
+  }
+
+  .copy {
+    min-height: 55vh;
+  }
+}
+
+@media (max-width: 560px) {
+  /* The tile field is illustration only; on a phone it costs a full screen of
+     scrolling to say nothing the copy does not already say. */
+  .visual {
+    display: none;
+  }
+
+  .copy {
+    min-height: auto;
+    padding: var(--ark-space-8) var(--ark-space-5);
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connectorPath {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .copy {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,400 @@
+/*
+ * The bridge card.
+ *
+ * One centred column at a fixed measure. The card used to sit in a two-column
+ * grid with a route panel beside it; that panel now lives behind the summary
+ * row inside the card, so there is nothing left to put in a second column and
+ * the form gets the middle of the screen to itself.
+ */
+/*
+ * A block, not a grid.
+ *
+ * It holds one child now that the route panel has moved inside the card, and a
+ * grid was actively harmful here: a grid item's automatic minimum size is its
+ * min-content width, so the card refused to shrink to the 520px track and
+ * overflowed it to the right — the card ended up 584px wide and visibly
+ * off-centre while the container it sat in was correctly centred.
+ */
+/*
+ * Measured against the reference, not eyeballed.
+ *
+ * The form column is 500px. Every other number in this file hangs off that,
+ * because the amount row, the asset button and the balance line were all
+ * proportioned for it.
+ */
+.layout {
+  width: 100%;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+/*
+ * Limit and Direct bring a chart, so the column becomes a workspace.
+ *
+ * The form keeps its 520px — it is the same form and widening it would only
+ * stretch the amount rows — and the chart takes the remaining space. The form
+ * is a fixed track rather than a fraction so it does not shrink as the chart
+ * grows, which would move the controls every time the mode changed.
+ */
+/*
+ * Full bleed, not a centred container.
+ *
+ * This was the size mismatch. The workspace was capped at the application
+ * measure (1120px) and centred, which left the chart about 570px wide — barely
+ * more than the form beside it. The reference runs edge to edge: a fixed 500px
+ * form pinned left and the chart taking every remaining pixel, which on a
+ * 1512px viewport is 960px. A candlestick chart is one of the few things that
+ * genuinely improves with width, and halving it was the difference between
+ * reading the series and squinting at it.
+ */
+/*
+ * A stack, not a card.
+ *
+ * There is no enclosing border here, because the reference has none: the tab
+ * strip, the pay/receive group, the summary, the options row and the button are
+ * five separately bordered blocks in a column. Wrapping them in a sixth border
+ * added 32px of padding inside a 500px column and made every block narrower
+ * than its counterpart, which is most of why the proportions read wrong.
+ */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-3);
+  /* Lets the flex children below actually compress rather than propagating a
+     min-content floor back up. */
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ark-space-3);
+}
+
+.mode {
+  margin: 0;
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ark-text-primary);
+}
+
+.tool {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    border-color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.tool:hover:not(:disabled) {
+  color: var(--ark-text-primary);
+  border-color: var(--ark-border-strong);
+  background: rgb(255 255 255 / 4%);
+}
+
+/* Refreshing is the one place a spinner is right: the button *is* the thing
+   that is working, and it has nowhere else to report from. */
+.tool:disabled {
+  cursor: default;
+  color: var(--ark-text-muted);
+  animation: ark-spin 900ms linear infinite;
+}
+
+/*
+ * The two sides, sharing one border.
+ *
+ * A single container with an internal divider, rather than two cards with a
+ * gap. The flip control straddles the divider, and that only reads as "turn
+ * this over" if there is one object to turn over.
+ */
+.swapGroup {
+  position: relative;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+  background: var(--ark-background);
+}
+
+.side {
+  display: grid;
+  /*
+   * `minmax(0, 1fr)`, not the implicit `auto`.
+   *
+   * An auto track is floored at the largest min-content contribution of its
+   * items, and the amount row's is the asset button plus the input's intrinsic
+   * width — about 516px. That floor made the row wider than the card and the
+   * whole panel spilled out to the right. An explicit zero minimum lets the
+   * track take the space it is actually given, and the input shrinks with it.
+   */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ark-space-3);
+  padding: var(--ark-space-4);
+}
+
+.sideHead {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  min-height: 30px;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+/* Pushed right, and it keeps its space when there is no balance to show, so
+   the header does not reflow the moment a wallet connects. */
+.balance {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  margin-left: auto;
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+  white-space: nowrap;
+}
+
+/* Asset on the left, number on the right, on one line. */
+.amountRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  min-width: 0;
+}
+
+.amount,
+.receiveAmount {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-amount);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  /* Right-aligned so the decimal point sits in the same place on both rows and
+     the two figures can be compared without reading them. */
+  text-align: right;
+}
+
+.amount:focus {
+  outline: none;
+}
+
+.amount::placeholder {
+  color: var(--ark-text-muted);
+}
+
+.receiveAmount {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Zero is not a value the user entered; it should not look like one. */
+.receiveAmount[data-empty="true"] {
+  color: var(--ark-text-muted);
+}
+
+.origin {
+  margin: 0;
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+/*
+ * The seam.
+ *
+ * Zero height, so the two sides meet with no gap between them, and the button
+ * is lifted out of the flow to straddle the join. The rule is drawn on this
+ * element rather than as a border on either side, so it can run the full width
+ * while the button punches through it.
+ */
+.seam {
+  position: relative;
+  height: 0;
+  border-top: 1px solid var(--ark-border);
+}
+
+.switch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  /* Opaque: it has to cover the rule it is sitting on. */
+  background: var(--ark-surface-elevated);
+  color: var(--ark-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    border-color var(--ark-transition),
+    transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+/* Rotating on hover previews what pressing it does. The translate has to be
+   restated — a transform replaces, it does not accumulate. */
+.switch:hover:not(:disabled) {
+  color: var(--ark-primary);
+  border-color: var(--ark-border-strong);
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+.switch:disabled {
+  cursor: default;
+  color: var(--ark-text-muted);
+  opacity: 0.5;
+}
+
+.options {
+  min-width: 0;
+}
+
+.cta {
+  margin-top: var(--ark-space-2);
+  padding: var(--ark-space-4);
+  border: none;
+  border-radius: var(--ark-radius-md);
+  background: var(--ark-metal);
+  color: var(--ark-primary-contrast);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--ark-transition);
+}
+
+.cta:hover:not(:disabled) {
+  background: var(--ark-metal-hover);
+}
+
+.cta:disabled {
+  background: var(--ark-surface-elevated);
+  color: var(--ark-text-muted);
+  border: 1px solid var(--ark-border);
+  cursor: not-allowed;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  color: var(--ark-text-muted);
+  text-align: center;
+}
+
+.empty {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--ark-space-8);
+  text-align: center;
+  background: var(--ark-surface);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+}
+
+.emptyTitle {
+  margin: 0 0 var(--ark-space-2);
+  font-size: var(--ark-text-subheading);
+}
+
+.emptyBody {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+}
+
+.max {
+  padding: 2px var(--ark-space-2);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-full);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.max:hover {
+  border-color: var(--ark-primary);
+  color: var(--ark-primary);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  color: var(--ark-text-secondary);
+  text-align: center;
+}
+
+/* Errors are text, not just colour (§118), and stay legible in both themes. */
+.error {
+  margin: 0;
+  padding: var(--ark-space-3);
+  border: 1px solid var(--ark-error);
+  border-radius: var(--ark-radius-md);
+  background: color-mix(in srgb, var(--ark-error) 10%, transparent);
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body-sm);
+}
+
+/* The primary action is the one element allowed a lift. */
+.cta:not(:disabled) {
+  transition:
+    background var(--ark-duration-fast) var(--ark-ease),
+    transform var(--ark-duration-fast) var(--ark-ease);
+}
+
+.cta:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.cta:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* Errors arrive rather than appear, so a message that was not there a moment
+   ago is noticed. */
+.error {
+  animation: ark-rise var(--ark-duration-base) var(--ark-ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta:not(:disabled):hover {
+    transform: none;
+  }
+
+  /* The flip button keeps its centring transform and loses only the spin —
+     dropping the whole transform would move it off the seam. */
+  .switch,
+  .switch:hover:not(:disabled) {
+    transform: translate(-50%, -50%);
+    transition: none;
+  }
+
+  .tool:disabled {
+    animation: none;
+  }
+
+  .error {
+    animation: none;
+  }
+}

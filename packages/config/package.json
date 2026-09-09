@@ -1,0 +1,43 @@
+{
+  "name": "@arkbridge/config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Environment resolution, deployment-artifact hydration, and registry validation.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "arkbridge-validate-config": "./dist/cli/validate.js",
+    "arkbridge-check-chains": "./dist/cli/check-chains.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist .turbo",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "validate": "node dist/cli/validate.js",
+    "check-chains": "node dist/cli/check-chains.js"
+  },
+  "dependencies": {
+    "@arkbridge/chain-registry": "workspace:*",
+    "@arkbridge/token-registry": "workspace:*",
+    "@arkbridge/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^5.9.3"
+  }
+}

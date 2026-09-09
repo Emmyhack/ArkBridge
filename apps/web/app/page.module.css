@@ -1,0 +1,13 @@
+/*
+ * The landing page takes the wide measure.
+ *
+ * The application's 1120px is sized for a bridge form and a table of transfers.
+ * The marketing sections need the extra room to let a two-column split breathe
+ * without the columns becoming too narrow to hold a readable line.
+ */
+.page {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--ark-measure);
+  margin-inline: auto;
+}

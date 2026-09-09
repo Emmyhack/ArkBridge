@@ -1,0 +1,51 @@
+/*
+ * Both states are quiet bordered pills.
+ *
+ * "Connect Wallet" used to be filled with the accent. In the header that put
+ * two solid pills side by side — connect, and the bridge CTA — and with two of
+ * them neither is primary (§13). Connecting a wallet is also not the thing the
+ * page is asking for; it is a step on the way to the thing. The filled
+ * treatment stays reserved for the actual call to action.
+ */
+.connect,
+.connected {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-3) var(--ark-space-5);
+  border-radius: var(--ark-radius-full);
+  border: 1px solid var(--ark-border);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color var(--ark-transition),
+    color var(--ark-transition),
+    background var(--ark-transition);
+  white-space: nowrap;
+}
+
+.connect:hover:not(:disabled),
+.connected:hover {
+  border-color: var(--ark-border-strong);
+  color: var(--ark-text-primary);
+  background: rgb(255 255 255 / 4%);
+}
+
+.connect:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Connection state is shown by dot AND text, never colour alone (§50, §118). */
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--ark-radius-full);
+  background: var(--ark-success);
+  flex: none;
+}

@@ -1,0 +1,32 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+  margin: 0;
+  padding: var(--ark-space-4);
+  background: var(--ark-surface-elevated);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  font-size: var(--ark-text-body-sm);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ark-space-4);
+}
+
+.row dt {
+  color: var(--ark-text-muted);
+}
+
+.row dd {
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  text-align: right;
+}
+
+.emphasis {
+  font-weight: 600;
+  color: var(--ark-text-primary);
+}

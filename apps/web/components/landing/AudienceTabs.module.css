@@ -1,0 +1,139 @@
+.section {
+  padding: var(--ark-space-16) 0;
+}
+
+.strip {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* The strip is one pixel taller than its content so the selected tab can
+     overlap the panel border below it. */
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--ark-space-4) var(--ark-space-5);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--ark-radius-lg) var(--ark-radius-lg) 0 0;
+  background: transparent;
+  color: var(--ark-text-muted);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.tab:hover {
+  color: var(--ark-text-secondary);
+}
+
+/*
+ * The notch. The selected tab draws its own border on three sides and fills
+ * with the panel's colour, so where it meets the panel there is no line — the
+ * shapes merge. `padding-bottom` gains the pixel the negative margin above
+ * took away, keeping the label optically centred.
+ */
+.tab[aria-selected="true"] {
+  border-color: var(--ark-border);
+  background: var(--ark-surface);
+  color: var(--ark-primary);
+  padding-bottom: calc(var(--ark-space-4) + 1px);
+}
+
+.panel {
+  position: relative;
+  padding: var(--ark-space-12);
+  border: 1px solid var(--ark-border);
+  border-radius: 0 var(--ark-radius-xl) var(--ark-radius-xl) var(--ark-radius-xl);
+  /* Opaque, unlike the rest of the page's glass surfaces — see the note in the
+     component: the notch depends on being able to paint over a border. */
+  background: var(--ark-surface);
+}
+
+/* The first tab is flush left, so the panel's top-left corner must be square to
+   meet it. Any other selection and the corner rounds again. */
+.strip:has(.tab:first-child[aria-selected="true"]) + .panel {
+  border-top-left-radius: 0;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ark-space-16);
+}
+
+.figure {
+  display: grid;
+  place-items: center;
+}
+
+.copy {
+  display: grid;
+  gap: var(--ark-space-5);
+  justify-items: start;
+}
+
+.title {
+  max-width: 18ch;
+}
+
+.claim {
+  margin: 0;
+  font-size: var(--ark-text-lead);
+  line-height: var(--ark-text-lead-lh);
+}
+
+.prose {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--ark-text-body);
+  line-height: 1.65;
+  color: var(--ark-text-secondary);
+}
+
+.action {
+  margin-top: var(--ark-space-3);
+}
+
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ark-space-8);
+  }
+
+  .figure {
+    /* The graphic is decoration; on a narrow screen it should not push the
+       copy below the fold, so it halves rather than stacking at full size. */
+    max-width: 240px;
+  }
+
+  .panel {
+    padding: var(--ark-space-8) var(--ark-space-6);
+  }
+}
+
+@media (max-width: 640px) {
+  .tab {
+    min-width: 108px;
+    font-size: var(--ark-text-body-sm);
+  }
+
+  .figure {
+    display: none;
+  }
+}

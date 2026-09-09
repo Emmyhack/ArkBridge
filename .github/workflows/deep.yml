@@ -1,0 +1,74 @@
+name: Deep tests
+
+# Long-running fuzz and invariant campaigns. Too slow for every pull request,
+# but required before any release and run nightly against main.
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  fuzz:
+    name: Deep fuzz and invariants
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      FOUNDRY_PROFILE: deep
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Deep fuzz
+        run: forge test -vvv
+        working-directory: packages/contracts
+
+  fork:
+    name: Fork tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # Fork tests need live RPC endpoints, so they are kept out of the pull
+    # request path where forked runs have no access to secrets.
+    if: github.repository == 'Emmyhack/ArkBridge'
+    env:
+      SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+      BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
+      ARK_RPC_URL: ${{ secrets.ARK_RPC_URL }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Fork tests
+        run: forge test --match-path "test/fork/**" -vvv
+        working-directory: packages/contracts
+
+  chains:
+    name: Registry vs. live networks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Deliberately not on the pull request path: this depends on third-party
+    # public RPC endpoints, and a check that goes red for reasons outside the
+    # repository stops being read. Nightly is enough to catch registry drift.
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check chains
+        run: pnpm check:chains

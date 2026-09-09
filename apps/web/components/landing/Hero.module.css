@@ -1,0 +1,98 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Tall, but bounded by viewport height so the section below is always
+     partially visible on a laptop — a hero that exactly fills the screen gives
+     no signal that there is more page. */
+  padding: clamp(64px, 11vh, 128px) 0 var(--ark-space-20);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  max-width: 15ch;
+}
+
+/* Each line rises independently, 90ms apart. The effect is the headline
+   assembling rather than arriving — worth the complexity here and nowhere
+   else, because this is the first thing anyone sees. */
+.line {
+  animation: ark-rise var(--ark-duration-reveal) var(--ark-ease-out) both;
+}
+
+.line[data-line="2"] {
+  animation-delay: 90ms;
+}
+
+.lead {
+  max-width: 62ch;
+  margin-top: var(--ark-space-8);
+  animation: ark-rise var(--ark-duration-reveal) var(--ark-ease-out) both;
+  animation-delay: 180ms;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ark-space-3);
+  margin-top: var(--ark-space-12);
+  animation: ark-rise var(--ark-duration-reveal) var(--ark-ease-out) both;
+  animation-delay: 260ms;
+}
+
+.quiet {
+  margin-top: var(--ark-space-8);
+  animation: ark-rise var(--ark-duration-reveal) var(--ark-ease-out) both;
+  animation-delay: 340ms;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ark-space-4);
+  width: 100%;
+  max-width: 720px;
+  margin: var(--ark-space-20) 0 0;
+  padding: var(--ark-space-6) 0 0;
+  border-top: 1px solid var(--ark-border);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.statValue {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ark-text-primary);
+}
+
+.statLabel {
+  margin: 0;
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+@media (max-width: 620px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ark-space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .lead,
+  .actions,
+  .quiet {
+    animation: none;
+  }
+}

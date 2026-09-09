@@ -1,0 +1,51 @@
+# Hyperlane chain metadata for Ark Constellation Devnet.
+#
+# NAMING: Hyperlane registry chain names are lowercase and unpunctuated, so this
+# chain is `arkdevnet` here while ArkBridge's own chain registry keys it
+# `ark-devnet`. The mapping is recorded in infrastructure/hyperlane/README.md and
+# must be applied whenever a value crosses between the two registries.
+name: arkdevnet
+displayName: Ark Constellation Devnet
+protocol: ethereum
+
+# EVM chain id, confirmed live: eth_chainId -> 0x2328.
+# Note Ark also has a Cosmos chain id (arkdevnet_9000-1) naming the same
+# network. Hyperlane uses the EVM one.
+chainId: 9000
+
+# Chosen to equal the EVM chain id. Verified before deployment: fits uint32, and
+# unclaimed across all 348 chains in @hyperlane-xyz/registry@26.1.0 (Evmos holds
+# the adjacent 9001). Fixed in the deployed Mailbox bytecode.
+domainId: 9000
+
+isTestnet: true
+
+nativeToken:
+  name: Kash
+  symbol: KASH
+  decimals: 18
+
+rpcUrls:
+  - http: https://evm.34.60.137.196.sslip.io
+
+blockExplorers:
+  - name: Ark Explorer
+    family: blockscout
+    url: https://explorer.34.60.137.196.sslip.io
+    apiUrl: https://explorer-api.34.60.137.196.sslip.io/api
+
+blocks:
+  # Measured: ~2.95s across blocks 207508..207528.
+  estimateBlockTime: 3
+  confirmations: 1
+  # Ark is a Cosmos SDK chain running CometBFT, which finalises deterministically
+  # at commit — a committed block cannot be reorged without a slashable
+  # equivocation by more than a third of the validator set. The reorg risk this
+  # field normally guards against does not exist here, so 0 would be technically
+  # correct. Set to 1 purely as a margin against RPC nodes serving slightly stale
+  # state, not against reorgs.
+  reorgPeriod: 1
+
+deployer:
+  name: ArkBridge
+  url: https://github.com/Emmyhack/ArkBridge

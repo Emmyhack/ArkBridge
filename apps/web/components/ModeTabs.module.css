@@ -1,0 +1,44 @@
+/*
+ * A segmented control: one inset track, with the selected segment raised out of
+ * it. The track makes the three options read as one choice — three separate
+ * buttons would read as three separate actions.
+ */
+.strip {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  background: var(--ark-background);
+}
+
+.tab {
+  padding: var(--ark-space-2) var(--ark-space-5);
+  border: none;
+  border-radius: calc(var(--ark-radius-md) - 3px);
+  background: transparent;
+  color: var(--ark-text-muted);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.tab:hover {
+  color: var(--ark-text-secondary);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--ark-surface-elevated);
+  color: var(--ark-text-primary);
+  box-shadow: var(--ark-shadow-card);
+}
+
+@media (max-width: 520px) {
+  .tab {
+    padding: var(--ark-space-2) var(--ark-space-3);
+  }
+}

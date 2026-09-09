@@ -1,0 +1,37 @@
+{
+  "name": "@arkbridge/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "clean": "rm -rf .next .turbo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@arkbridge/bridge-core": "workspace:*",
+    "@arkbridge/chain-registry": "workspace:*",
+    "@arkbridge/config": "workspace:*",
+    "@arkbridge/indexer": "workspace:*",
+    "@arkbridge/sdk": "workspace:*",
+    "@arkbridge/token-registry": "workspace:*",
+    "@arkbridge/types": "workspace:*",
+    "@arkbridge/ui": "workspace:*",
+    "@tanstack/react-query": "^5.90.2",
+    "@wagmi/core": "^2.22.1",
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "server-only": "^0.0.1",
+    "viem": "^2.40.0",
+    "wagmi": "^2.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.9.3"
+  }
+}

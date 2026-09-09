@@ -1,0 +1,136 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-8);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+}
+
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.overall,
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  margin: 0;
+  font-size: var(--ark-text-body-sm);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-3);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ark-space-4);
+  padding: var(--ark-space-3) var(--ark-space-4);
+  background: var(--ark-surface);
+  font-size: var(--ark-text-body-sm);
+}
+
+.row + .row {
+  border-top: 1px solid var(--ark-border);
+}
+
+.rowName {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  min-width: 0;
+}
+
+.asset {
+  padding: 1px var(--ark-space-2);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-full);
+  font-size: var(--ark-text-caption);
+  color: var(--ark-text-secondary);
+}
+
+.state {
+  font-size: var(--ark-text-body-sm);
+  flex: none;
+}
+
+.latency {
+  font-variant-numeric: tabular-nums;
+  color: var(--ark-text-muted);
+  font-size: var(--ark-text-label);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--ark-radius-full);
+  background: var(--ark-text-muted);
+  flex: none;
+}
+
+[data-health="operational"] .dot {
+  background: var(--ark-success);
+}
+
+[data-health="degraded"] .dot {
+  background: var(--ark-warning);
+}
+
+[data-health="unavailable"] .dot {
+  background: var(--ark-error);
+}
+
+.note {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  color: var(--ark-text-muted);
+}
+
+@media (max-width: 560px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ark-space-1);
+  }
+}
+
+/* Status rows are dense; the mark rides at the row's type size rather than the
+   selector's control size. */
+.rowName :global(.ark-mark) {
+  width: 22px;
+  height: 22px;
+  font-size: var(--ark-text-caption);
+}

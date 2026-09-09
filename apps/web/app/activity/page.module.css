@@ -1,0 +1,28 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  /* The layout no longer constrains the main column, so each page states its
+     own measure. */
+  max-width: var(--ark-measure-app);
+  margin-inline: auto;
+  gap: var(--ark-space-6);
+}
+
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  max-width: 720px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.subtitle {
+  width: 100%;
+  max-width: 720px;
+  margin: calc(var(--ark-space-6) * -0.5) auto 0;
+  color: var(--ark-text-muted);
+  line-height: 1.65;
+}

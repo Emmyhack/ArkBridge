@@ -1,0 +1,275 @@
+# Hyperlane agents for Ark Constellation Devnet.
+#
+# Three validators watching Ark, plus a relayer. Ark is a new chain, so no third
+# party validates it — ArkBridge must run this set for anything to leave Ark.
+#
+#   docker compose -f infrastructure/docker/docker-compose.agents.yml up -d
+#   docker compose -f infrastructure/docker/docker-compose.agents.yml logs -f
+#
+# ⚠ THREE VALIDATORS ON ONE HOST IS A TEST TOPOLOGY, NOT A SECURITY MODEL.
+#   A 2-of-3 threshold means nothing when one compromised machine holds all
+#   three keys and one Docker daemon can stop all three processes. Production
+#   requires independent operators on independent infrastructure.
+#
+# Keys come from .env and are never baked into the image or this file.
+
+x-agent: &agent
+  image: gcr.io/abacus-labs-dev/hyperlane-agent:agents-v2.0.0
+  platform: linux/arm64
+  restart: unless-stopped
+  volumes:
+    - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+  environment: &agent-env
+    CONFIG_FILES: /config/agent-config.json
+    HYP_LOG_LEVEL: info
+    HYP_LOG_FORMAT: compact
+    HYP_CHAINS_ARKDEVNET_RPCURLS_0_HTTP: ${ARK_RPC_URL}
+
+x-validator: &validator
+  <<: *agent
+  command: ["./validator"]
+  environment: &validator-env
+    <<: *agent-env
+    HYP_ORIGINCHAINNAME: arkdevnet
+    HYP_VALIDATOR_TYPE: hexKey
+    HYP_CHECKPOINTSYNCER_TYPE: localStorage
+    HYP_DB: /data/db
+    # NOTE: HYP_CHECKPOINTSYNCER_PATH is set per validator, not here.
+    #
+    # A validator announces its storage path on-chain, and the relayer resolves
+    # that exact string inside its OWN container. If all three announce the same
+    # path, the relayer can only ever mount one of them there and quorum is
+    # unreachable — it reads one directory three times.
+    #
+    # So each validator writes to a distinct subdirectory of a volume that every
+    # container mounts at the same location, /checkpoints. The announced path is
+    # then valid in the relayer's filesystem too.
+    #
+    # Devnet only. Production validators publish to S3 or GCS, which removes the
+    # shared-filesystem requirement entirely and survives losing the host.
+
+  # ── Sepolia validators ──────────────────────────────────────────────────────
+  # ArkBridge runs its own validators for Sepolia as well as Ark.
+  #
+  # Why, given Hyperlane already validates Sepolia:
+  #
+  #   1. Security. Hyperlane's Sepolia and BSC Testnet sets are both 1-of-1 AND
+  #      both the same key, so one compromise forges messages from both origins
+  #      into Ark. Our own 2-of-3 removes that.
+  #   2. Liveness. Their validator publishes checkpoints to a GCS bucket; our
+  #      relayer has no GCP credentials and cannot read them, so inbound could
+  #      not reach quorum at all. Signatures we produce, we can also read.
+  #
+  # The same three keys validate both chains. That is a deliberate reuse: the
+  # threshold is still 2-of-3 on each chain, and per-chain key separation buys
+  # little on a devnet where all three already share a host. Production should
+  # separate them.
+  #
+  # NOTE: these index Sepolia's merkleTreeHook from its deployment block
+  # (4,517,413) because a validator must reconstruct the whole incremental tree
+  # to sign a root that matches on-chain. There are ~872k insertions to replay,
+  # so first sync takes a while. The relayer keeps its own recent index.from —
+  # it only needs new messages, not history.
+
+x-sepolia-validator: &sepolia-validator
+  <<: *agent
+  restart: unless-stopped
+  command: ["./validator"]
+  environment: &sepolia-validator-env
+    <<: *agent-env
+    HYP_ORIGINCHAINNAME: sepolia
+    HYP_VALIDATOR_TYPE: hexKey
+    HYP_CHECKPOINTSYNCER_TYPE: localStorage
+    HYP_DB: /data/db
+    HYP_CHAINS_SEPOLIA_INDEX_FROM: "4517413"
+    HYP_CHAINS_SEPOLIA_SIGNER_TYPE: hexKey
+
+  # ── Base Sepolia validators ─────────────────────────────────────────────────
+  # Same rationale as the Sepolia set: ArkBridge runs its own rather than
+  # trusting Hyperlane's testnet validator, both because that set is 1-of-1 and
+  # because its checkpoints live in a GCS bucket this relayer cannot read.
+  #
+  # Base Sepolia's merkleTreeHook was deployed at block 13,851,620 and the chain
+  # is now past 46M, so first sync replays ~32.5M blocks. A validator must
+  # reconstruct the whole tree to sign a root that matches on-chain, so this
+  # cannot be shortcut by starting near the tip.
+
+x-base-validator: &base-validator
+  <<: *agent
+  restart: unless-stopped
+  command: ["./validator"]
+  environment: &base-validator-env
+    <<: *agent-env
+    HYP_ORIGINCHAINNAME: basesepolia
+    HYP_VALIDATOR_TYPE: hexKey
+    HYP_CHECKPOINTSYNCER_TYPE: localStorage
+    HYP_DB: /data/db
+    HYP_CHAINS_BASESEPOLIA_INDEX_FROM: "13851620"
+    HYP_CHAINS_BASESEPOLIA_SIGNER_TYPE: hexKey
+
+services:
+  base-validator-1:
+    <<: *base-validator
+    container_name: ark-base-validator-1
+    environment:
+      <<: *base-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_1_KEY}
+      HYP_CHAINS_BASESEPOLIA_SIGNER_KEY: ${VALIDATOR_1_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/base-validator-1
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - base-validator-1-data:/data
+      - checkpoints:/checkpoints
+
+  base-validator-2:
+    <<: *base-validator
+    container_name: ark-base-validator-2
+    environment:
+      <<: *base-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_2_KEY}
+      HYP_CHAINS_BASESEPOLIA_SIGNER_KEY: ${VALIDATOR_2_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/base-validator-2
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - base-validator-2-data:/data
+      - checkpoints:/checkpoints
+
+  base-validator-3:
+    <<: *base-validator
+    container_name: ark-base-validator-3
+    environment:
+      <<: *base-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_3_KEY}
+      HYP_CHAINS_BASESEPOLIA_SIGNER_KEY: ${VALIDATOR_3_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/base-validator-3
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - base-validator-3-data:/data
+      - checkpoints:/checkpoints
+
+  sepolia-validator-1:
+    <<: *sepolia-validator
+    container_name: ark-sepolia-validator-1
+    environment:
+      <<: *sepolia-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_1_KEY}
+      HYP_CHAINS_SEPOLIA_SIGNER_KEY: ${VALIDATOR_1_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/sepolia-validator-1
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - sepolia-validator-1-data:/data
+      - checkpoints:/checkpoints
+
+  sepolia-validator-2:
+    <<: *sepolia-validator
+    container_name: ark-sepolia-validator-2
+    environment:
+      <<: *sepolia-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_2_KEY}
+      HYP_CHAINS_SEPOLIA_SIGNER_KEY: ${VALIDATOR_2_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/sepolia-validator-2
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - sepolia-validator-2-data:/data
+      - checkpoints:/checkpoints
+
+  sepolia-validator-3:
+    <<: *sepolia-validator
+    container_name: ark-sepolia-validator-3
+    environment:
+      <<: *sepolia-validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_3_KEY}
+      HYP_CHAINS_SEPOLIA_SIGNER_KEY: ${VALIDATOR_3_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/sepolia-validator-3
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - sepolia-validator-3-data:/data
+      - checkpoints:/checkpoints
+
+  validator-1:
+    <<: *validator
+    container_name: ark-validator-1
+    environment:
+      <<: *validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_1_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/validator-1
+      # Signs the one-time ValidatorAnnounce transaction on Ark.
+      HYP_CHAINS_ARKDEVNET_SIGNER_TYPE: hexKey
+      HYP_CHAINS_ARKDEVNET_SIGNER_KEY: ${VALIDATOR_1_KEY}
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - validator-1-data:/data
+      - checkpoints:/checkpoints
+
+  validator-2:
+    <<: *validator
+    container_name: ark-validator-2
+    environment:
+      <<: *validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_2_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/validator-2
+      HYP_CHAINS_ARKDEVNET_SIGNER_TYPE: hexKey
+      HYP_CHAINS_ARKDEVNET_SIGNER_KEY: ${VALIDATOR_2_KEY}
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - validator-2-data:/data
+      - checkpoints:/checkpoints
+
+  validator-3:
+    <<: *validator
+    container_name: ark-validator-3
+    environment:
+      <<: *validator-env
+      HYP_VALIDATOR_KEY: ${VALIDATOR_3_KEY}
+      HYP_CHECKPOINTSYNCER_PATH: /checkpoints/validator-3
+      HYP_CHAINS_ARKDEVNET_SIGNER_TYPE: hexKey
+      HYP_CHAINS_ARKDEVNET_SIGNER_KEY: ${VALIDATOR_3_KEY}
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - validator-3-data:/data
+      - checkpoints:/checkpoints
+
+  relayer:
+    <<: *agent
+    container_name: ark-relayer
+    command: ["./relayer"]
+    depends_on: [validator-1, validator-2, validator-3]
+    environment:
+      <<: *agent-env
+      # Both ends of the Ark <-> Sepolia path. BSC Testnet joins once funded.
+      HYP_RELAYCHAINS: arkdevnet,sepolia,basesepolia
+      HYP_DB: /data/db
+      HYP_ALLOWLOCALCHECKPOINTSYNCERS: "true"
+      # No IGP is deployed on Ark, so there is no gas payment to enforce. This
+      # must become a real policy before any public testnet — otherwise the
+      # relayer delivers messages nobody paid for.
+      HYP_GASPAYMENTENFORCEMENT: '[{"type":"none"}]'
+      HYP_CHAINS_ARKDEVNET_SIGNER_TYPE: hexKey
+      HYP_CHAINS_ARKDEVNET_SIGNER_KEY: ${RELAYER_KEY}
+      # Delivering an Ark-originated message on Sepolia costs Sepolia gas, so
+      # the relayer signs there too. Fund this address on every destination.
+      HYP_CHAINS_SEPOLIA_SIGNER_TYPE: hexKey
+      HYP_CHAINS_SEPOLIA_SIGNER_KEY: ${RELAYER_KEY}
+      HYP_CHAINS_BASESEPOLIA_SIGNER_TYPE: hexKey
+      HYP_CHAINS_BASESEPOLIA_SIGNER_KEY: ${RELAYER_KEY}
+    volumes:
+      - ../hyperlane/agents/agent-config.json:/config/agent-config.json:ro
+      - relayer-data:/data
+      # Mounted at the same path the validators announced, so file:///checkpoints/
+      # validator-N resolves here too. Only workable because everything runs on
+      # one host — see the warning above.
+      - checkpoints:/checkpoints:ro
+
+volumes:
+  base-validator-1-data:
+  base-validator-2-data:
+  base-validator-3-data:
+  sepolia-validator-1-data:
+  sepolia-validator-2-data:
+  sepolia-validator-3-data:
+  validator-1-data:
+  validator-2-data:
+  validator-3-data:
+  relayer-data:
+  # Shared so the relayer can read what the validators signed.
+  checkpoints:

@@ -1,0 +1,104 @@
+/*
+ * Flat, not a card.
+ *
+ * This used to be a standalone panel sitting beside the bridge card and was
+ * styled as its own surface. It now renders only inside the transfer summary's
+ * disclosure, and keeping the border and fill produced a card inside a card
+ * inside a card — three nested rounded rectangles, each one making the content
+ * feel further away. Disclosed detail should read as part of the thing it was
+ * disclosed from.
+ */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-5);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+.path {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-1);
+}
+
+.hop {
+  font-size: var(--ark-text-body-sm);
+  font-weight: 500;
+}
+
+.arrow {
+  color: var(--ark-text-muted);
+  font-size: var(--ark-text-label);
+  line-height: 1;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-3);
+  margin: 0;
+  padding-top: var(--ark-space-4);
+  border-top: 1px solid var(--ark-border);
+}
+
+.fact {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ark-space-4);
+  font-size: var(--ark-text-body-sm);
+}
+
+.fact dt {
+  color: var(--ark-text-muted);
+}
+
+.fact dd {
+  margin: 0;
+  text-align: right;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--ark-radius-full);
+  background: var(--ark-success);
+  flex: none;
+}
+
+/* Status is read now, so it has states to render. Colour is never the only
+   carrier — the label beside the dot always says which state this is. */
+.status[data-health="degraded"] .statusDot {
+  background: var(--ark-warning);
+}
+
+.status[data-health="unavailable"] .statusDot {
+  background: var(--ark-error);
+}
+
+.status[data-health="checking"] .statusDot {
+  background: var(--ark-text-muted);
+  animation: ark-pulse 1.4s var(--ark-ease) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status[data-health="checking"] .statusDot {
+    animation: none;
+  }
+}

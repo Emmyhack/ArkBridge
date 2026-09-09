@@ -1,0 +1,90 @@
+.strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ark-space-8);
+  padding: var(--ark-space-8) 0 var(--ark-space-16);
+}
+
+.caption {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  font-weight: 600;
+  letter-spacing: var(--ark-text-label-tracking);
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ark-space-10);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: inline-flex;
+  /* Centre, not baseline: the row now carries a mark beside each name, and a
+     baseline alignment would hang the circular marks below the type. */
+  align-items: center;
+  gap: var(--ark-space-2);
+}
+
+/* Smaller than the selector's mark — this is a label in a row, not a control. */
+.item :global(.ark-mark) {
+  width: 22px;
+  height: 22px;
+  font-size: var(--ark-text-caption);
+}
+
+.name {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-wordmark);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ark-text-primary);
+  opacity: 0.75;
+  transition: opacity var(--ark-transition);
+}
+
+.item:hover .name {
+  opacity: 1;
+}
+
+.item[data-enabled="false"] .name {
+  color: var(--ark-text-muted);
+  opacity: 0.55;
+}
+
+/* The mark dims with the name. A full-colour logo beside a greyed-out label
+   reads as a rendering bug rather than as "not live yet", and on a brand mark
+   the colour is the loudest part. */
+.item[data-enabled="false"] :global(.ark-mark) {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+.pending {
+  font-size: var(--ark-text-caption);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ark-warning);
+}
+
+@media (max-width: 720px) {
+  .strip {
+    gap: var(--ark-space-5);
+  }
+
+  .list {
+    gap: var(--ark-space-6);
+  }
+
+  .name {
+    font-size: var(--ark-text-subheading);
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "environment": "testnet",
+  "chain": "sepolia",
+  "chainId": 11155111,
+  "hyperlaneDomainId": 11155111,
+  "contracts": {
+    "mailbox": "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766",
+    "validatorAnnounce": "0xE6105C59480a1B7DD3E4f28153aFdbE12F4CfCD9",
+    "merkleTreeHook": "0x4917a9746A7B6E0A57159cCb7F5a6744247f2d0d",
+    "interchainGasPaymaster": "0x6f2756380FD49228ae25Aa7F2817993cB74Ecc56",
+    "staticMessageIdMultisigIsmFactory": "0xFEb9585b2f948c1eD74034205a7439261a9d27DD",
+    "arkOutboundMultisigIsm": "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd",
+    "arkTestRecipient": "0x06d07042D3FC6E02b8AAad05cF28A8E31341b755",
+    "mockUsdc": "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742",
+    "mockUsdcCollateralRouter": "0x454637b786478EB76aA93F8ad68101e90ba5d97D",
+    "rateLimiter": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88",
+    "pauseController": "0x44894bf41ac04f0bf1323271e9818948c725d8ba",
+    "guard": "0x65c150152ebb78293dc63d83f989af5ed9d30132",
+    "guardHook": "0x7E3A670E7DafC4E92D7572b78d52A1E2F0A47553",
+    "guardIsm": "0x1c222DBa505757AF439BBc713f29B38d8841048B"
+  },
+  "contractDetails": {
+    "arkOutboundMultisigIsm": {
+      "address": "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd",
+      "deploymentTx": "0xcfa5c6a556970f2657d50c92fb32d3016df29f411d853c7643d5526985048c68",
+      "block": 11632506,
+      "gasUsed": 118385
+    },
+    "arkTestRecipient": {
+      "address": "0x06d07042D3FC6E02b8AAad05cF28A8E31341b755",
+      "block": 11633000
+    },
+    "mockUsdc": {
+      "address": "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742",
+      "deploymentTx": "0x4a1400bf4b402c6ed5ee45f967c0f4cab71fe922f76be7fbf5802b5ef2307dfb",
+      "block": 11633900
+    },
+    "mockUsdcCollateralRouter": {
+      "address": "0x454637b786478EB76aA93F8ad68101e90ba5d97D",
+      "block": 11634000
+    },
+    "rateLimiter": {
+      "address": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88",
+      "deploymentTx": "0x1226ad992584ad33d4b4735c7b946c5a61da93cbc0c27a13629e06ca2a59d8ff",
+      "block": 11636070
+    },
+    "pauseController": {
+      "address": "0x44894bf41ac04f0bf1323271e9818948c725d8ba",
+      "deploymentTx": "0x63fe0fd65b06e2561a4586dc576838ccca237eb1df9f02a6bbbd3c69f73b1764",
+      "block": 11636072
+    },
+    "guard": {
+      "address": "0x65c150152ebb78293dc63d83f989af5ed9d30132",
+      "deploymentTx": "0x874c04dbc55205f76597adab6e09a11c459cf39fa20dbbc44037c5eca2d7cab3",
+      "block": 11636073
+    },
+    "guardHook": {
+      "address": "0x7E3A670E7DafC4E92D7572b78d52A1E2F0A47553",
+      "block": 11638200,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "guardIsm": {
+      "address": "0x1c222DBa505757AF439BBc713f29B38d8841048B",
+      "block": 11638200,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "hyperlane": {
+    "packageVersion": "12.1.0",
+    "messageVersion": 3,
+    "cliVersion": "44.0.2"
+  },
+  "deployer": "0xF031363A7FDdaFDcea062adc7421353A95F16420",
+  "block": 11633000,
+  "timestamp": 0,
+  "notes": {
+    "provenance": "mailbox, validatorAnnounce, merkleTreeHook, interchainGasPaymaster and staticMessageIdMultisigIsmFactory are Hyperlane's canonical Sepolia deployment, deployed and owned by Abacus Works. `deployer` above refers only to the arkOutbound* / arkTestRecipient entries, which ArkBridge deployed.",
+    "arkOutboundMultisigIsm": "2-of-3 over ArkBridge's Ark validators. Verifies messages ORIGINATING on Ark (domain 9000) that are addressed to ArkBridge contracts on Sepolia. Contracts opt in by returning it from interchainSecurityModule(); Sepolia's Mailbox default is owned by Abacus Works and is not ours to change.",
+    "arkTestRecipient": "Mock recipient used to prove the Ark -> Sepolia path before any token route. Carries IS_ARKBRIDGE_MOCK; production tooling rejects it.",
+    "mockUsdcCollateralRouter": "HypERC20Collateral wrapping MockUSDC. ISM pinned to 0xfA35acC5...1aEbBd (ArkBridge's 2-of-3 over Ark validators) rather than inherited \u2014 a collateral router silently inheriting a future Mailbox default is the difference between a bridge and an open mint."
+  },
+  "tokens": {
+    "sepolia-mockusdc": {
+      "token": "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742",
+      "router": "0x454637b786478EB76aA93F8ad68101e90ba5d97D"
+    }
+  },
+  "guard": {
+    "status": "LIVE \u2014 collateral router gated on both directions",
+    "wiring": "The mockUsdcCollateralRouter now uses guardHook as its post-dispatch hook (outbound: locking collateral) and guardIsm as its ISM (inbound: releasing it). guardIsm wraps the existing multisig, so validator verification is unchanged.",
+    "limits": {
+      "perTransaction": "1000000000",
+      "hourly": "5000000000",
+      "daily": "20000000000"
+    },
+    "liveVerification": "A 100-unit transfer returns a message id; 2,000 reverts with ExceedsPerTransaction (0x9f6ddf1c). A live 5-unit transfer advanced Sepolia's merkleTreeHook from 872056 to 872057, proving the hook composes rather than replaces.",
+    "fundingNote": "The deployer was at 0 transactions remaining, which is why this was deferred. Resolved by moving 0.03 ETH from the relayer's Sepolia surplus (it held 0.07 and needs ~150 deliveries of headroom, not 266). Found by scripts/operations/check-agent-balances.mjs.",
+    "hyperlaneVersionNote": "Sepolia's merkleTreeHook predates `hookType()` and reverts on it, while Ark's (12.1.0) answers 3. The first guard hook delegated that call unguarded and was therefore unusable here. ArkBridge spans chains with different Hyperlane vintages, so the wrapper now guards both informational calls and falls back rather than reverting. Regression: test_toleratesAHookThatPredatesHookType."
+  }
+}

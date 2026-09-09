@@ -1,0 +1,76 @@
+/*
+ * A header row, not a hero.
+ *
+ * This was a centred stack — display-size title, subtitle, then a row of stats
+ * beneath — and it occupied about 250px above the form. The reference app puts
+ * its form roughly 90px below the viewport top with no marketing copy at all,
+ * and the spec's own requirement is that the form is above the fold (§11): a
+ * hero that pushes it down is working against both.
+ *
+ * So the same three facts and the same sentence, laid out as one line across
+ * the top of the workspace instead of a stack down the middle of it. Nothing
+ * was removed; it was turned on its side.
+ */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-inline: auto;
+  gap: var(--ark-space-2);
+  text-align: center;
+}
+
+/* Subheading, not heading. On an application screen the page title is a label
+   on the workspace, not a headline — and at heading size it cost 20px of the
+   form's height for no information. */
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+}
+
+/* Pushed to the trailing edge: the counts are reference material, not the
+   headline, and on a wide viewport they sit opposite the title rather than
+   under it. */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--ark-space-6);
+  margin: var(--ark-space-2) 0 0;
+}
+
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.statValue {
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  margin: 0;
+  font-size: var(--ark-text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+@media (max-width: 720px) {
+  .stats {
+    gap: var(--ark-space-5);
+  }
+}

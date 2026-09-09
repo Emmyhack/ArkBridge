@@ -1,0 +1,354 @@
+/*
+ * ArkBridge design tokens.
+ *
+ * Every colour, space and radius used by a component comes from here (§53: no
+ * hard-coded colours scattered through components). A component that needs a
+ * value not in this file is a signal the system is missing something, not a
+ * licence to inline a hex code.
+ *
+ * VISUAL CHARACTER (§52): infrastructure-grade. Deep, high-contrast, spacious,
+ * technical. Explicitly NOT the casino/meme register — no gradient soup, no
+ * constant motion. A bridge holds custody; the interface should read as
+ * something that does not lose your money.
+ *
+ * The palette combines two ArkBridge accents: electric cyan for action and
+ * network flow, and soft violet for identity, headings and ambient depth.
+ */
+
+:root {
+  /* Surfaces, darkest to lightest. */
+  --ark-background: #050b12;
+  --ark-surface: #09131d;
+  --ark-surface-elevated: #0d1b28;
+  /* Glass: panels that float over content and let the ambient light through. */
+  --ark-surface-glass: rgb(9 25 37 / 76%);
+
+  /* Text, in descending emphasis. */
+  --ark-text-primary: #ecfaff;
+  --ark-text-secondary: #aec9d3;
+  --ark-text-muted: #718f9c;
+
+  /* Borders are alpha, not solid, so a card reads correctly whether it sits on
+     the page ground or on top of a glow. */
+  --ark-border: rgb(82 214 255 / 10%);
+  --ark-border-strong: rgb(82 214 255 / 20%);
+
+  /*
+   * ACTION — polished steel.
+   *
+   * One accent, used sparingly, is what makes the primary action obvious
+   * (§13). Here that accent is a material rather than a hue: a cool platinum
+   * for strokes, icons and glows, and a four-stop gradient for anything
+   * filled.
+   *
+   * WHY A GRADIENT AND NOT A FLAT GREY
+   *
+   * Flat grey does not read as metal, it reads as a disabled control — which
+   * is precisely the wrong signal on the one button a page is asking you to
+   * press. Metal is legible only through its highlight: a bright edge, a mid
+   * body, a darker turn and a second highlight is the minimum ramp that says
+   * "this surface has a curve on it". `--ark-metal` supplies that; the flat
+   * `--ark-primary` remains for the many places that need a single colour
+   * value, including every `color-mix()` in the system, which cannot take a
+   * gradient.
+   *
+   * The platinum sits deliberately between the body text (#b9c2ce) and the
+   * primary text (#eef2f7): bright enough to promote, not so bright it
+   * competes with a heading.
+   */
+  --ark-primary: #52d6ff;
+  --ark-primary-hover: #82e2ff;
+  --ark-primary-contrast: #031017;
+  --ark-primary-dim: rgb(82 214 255 / 11%);
+  --ark-secondary: #a78bfa;
+  --ark-secondary-dim: rgb(167 139 250 / 11%);
+
+  /* Brushed steel, lit from the upper left. The narrow dark band at 58% is the
+     turn of the surface — remove it and the ramp flattens into a plain fade. */
+  /*
+   * Brushed steel, lit from above.
+   *
+   * The ramp runs top-to-bottom, not diagonally. A diagonal was the first
+   * instinct and it was wrong for the shape it lands on: these are wide, short
+   * pills, and a 145° ramp crosses one as a slanted band that reads as a smudge
+   * or a stray shadow. Metal on a horizontal control wants a horizontal
+   * highlight — bright top edge, body, a darker band where the surface turns
+   * away, then a second highlight catching the bottom lip.
+   */
+  --ark-metal: linear-gradient(180deg, #9becff 0%, #52d6ff 42%, #20afd9 74%, #70e2ff 100%);
+  --ark-metal-hover: linear-gradient(180deg, #c6f5ff 0%, #82e2ff 42%, #3bc4ed 74%, #9becff 100%);
+
+  /*
+   * DISPLAY. Peach is a *typographic* colour, never an interactive one. It
+   * appears on headings and section titles only. Keeping it out of buttons is
+   * what stops the page from looking like it has two calls to action.
+   */
+  --ark-display-ink: #c4b5fd;
+
+  /* Semantic. Never used alone to convey state — always paired with an icon
+     and text (§50, §118). */
+  --ark-success: #5ddc9b;
+  --ark-warning: #f5c563;
+  --ark-error: #ff6b6b;
+  --ark-info: #6ba4ff;
+
+  /* Spacing scale (§56). Components pick from this; they do not invent values.
+     The upper end exists for the marketing surface, where sections breathe at a
+     scale the application never needs. */
+  --ark-space-1: 4px;
+  --ark-space-2: 8px;
+  --ark-space-3: 12px;
+  --ark-space-4: 16px;
+  --ark-space-5: 20px;
+  --ark-space-6: 24px;
+  --ark-space-8: 32px;
+  --ark-space-10: 40px;
+  --ark-space-12: 48px;
+  --ark-space-16: 64px;
+  --ark-space-20: 80px;
+  --ark-space-24: 96px;
+  --ark-space-32: 128px;
+
+  /* Radius (§57): small controls, medium dropdowns, large cards, xl panels.
+     `full` is for pills — navigation and buttons only, never a container, so
+     the shape itself signals "this is pressable". */
+  --ark-radius-sm: 8px;
+  --ark-radius-md: 12px;
+  --ark-radius-lg: 16px;
+  --ark-radius-xl: 24px;
+  --ark-radius-2xl: 32px;
+  --ark-radius-full: 999px;
+
+  /*
+   * TYPEFACES
+   *
+   * Loaded and self-hosted by next/font (see lib/fonts.ts), which sets the
+   * --ark-font-*-face variables. The fallbacks here matter: if a font file
+   * fails, the interface must still be readable rather than falling back to a
+   * browser default that breaks the layout.
+   */
+  --ark-font-display: var(--ark-font-display-face), ui-sans-serif, system-ui, sans-serif;
+  --ark-font-sans: var(--ark-font-body-face), ui-sans-serif, system-ui, sans-serif;
+  /* Monospace is reserved for addresses, hashes, message ids and contract
+     addresses (§55) — things a user compares character by character. */
+  --ark-font-mono: var(--ark-font-mono-face), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /*
+   * TYPE SCALE (§55)
+   *
+   * Named roles, not an open set of sizes. A component picks a role; it does
+   * not invent a size. That is what keeps the hierarchy legible as the product
+   * grows past the handful of screens it has now.
+   *
+   * Two registers share one scale. The application lives between Body and
+   * Heading and stays calm and dense. The marketing surface uses Hero and
+   * Section, which are large enough that the type itself is the layout.
+   */
+  --ark-text-hero: clamp(44px, 7.2vw, 84px);
+  --ark-text-hero-lh: 1.03;
+
+  --ark-text-section: clamp(30px, 3.8vw, 48px);
+  --ark-text-section-lh: 1.1;
+
+  --ark-text-display: clamp(28px, 3vw, 38px);
+  --ark-text-display-lh: 1.1;
+
+  --ark-text-heading: 26px;
+  --ark-text-heading-lh: 1.2;
+
+  --ark-text-subheading: 18px;
+  --ark-text-subheading-lh: 1.35;
+
+  --ark-text-lead: clamp(16px, 1.35vw, 19px);
+  --ark-text-lead-lh: 1.5;
+
+  --ark-text-body: 15px;
+  --ark-text-body-lh: 1.55;
+
+  --ark-text-body-sm: 13px;
+  --ark-text-body-sm-lh: 1.55;
+
+  /* Wordmarks. Network names set as logotypes rather than as headings — they
+     are identifiers in a row, not titles of anything, so they take a size of
+     their own instead of borrowing the heading scale. */
+  --ark-text-wordmark: 22px;
+
+  --ark-text-label: 12px;
+  --ark-text-label-lh: 1.3;
+  --ark-text-label-tracking: 0.08em;
+
+  --ark-text-caption: 11px;
+  --ark-text-caption-lh: 1.4;
+
+  /*
+   * The amount field is its own role, not a heading.
+   *
+   * It is the largest thing in the card because it is the number the user is
+   * deciding on, but it is an input rather than a title — so it takes the body
+   * face, not the display face, and sits between Heading and Subheading.
+   */
+  --ark-text-amount: 28px;
+  --ark-text-amount-received: 22px;
+
+  /*
+   * Mask stops.
+   *
+   * A CSS mask reads only the alpha channel, so these are not theme colours and
+   * must be identical in every theme — which is exactly why they belong here
+   * rather than as literals in the stylesheets that feather an edge. Naming
+   * them also keeps the "no inlined colours" rule honest: a component never
+   * needs to write a raw colour, not even one that is not really a colour.
+   */
+  --ark-mask-opaque: rgb(0 0 0 / 100%);
+  --ark-mask-clear: rgb(0 0 0 / 0%);
+
+  --ark-shadow-card: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px rgb(0 0 0 / 24%);
+  --ark-shadow-float: 0 18px 48px rgb(0 0 0 / 45%), 0 2px 8px rgb(0 0 0 / 30%);
+  --ark-shadow-glow: 0 0 0 1px rgb(82 214 255 / 28%), 0 12px 40px rgb(82 214 255 / 16%);
+  --ark-focus-ring: 0 0 0 2px var(--ark-background), 0 0 0 4px var(--ark-primary);
+
+  /*
+   * MOTION SYSTEM
+   *
+   * Motion here communicates stability, not personality (§59). Every animation
+   * earns its place by doing one of three jobs:
+   *
+   *   1. Showing continuity  — where a thing came from, so it is not perceived
+   *                            as a new thing appearing.
+   *   2. Directing attention — to the one element that changed.
+   *   3. Confirming progress — that something is still happening, and where in
+   *                            the sequence it is.
+   *
+   * Interaction durations are short: above ~250ms an interface starts to feel
+   * like it is deciding rather than responding. The ambient durations are in
+   * whole seconds and belong exclusively to decorative marketing loops — an
+   * orbit, a slow rotation — which must be slow enough to sit below notice.
+   */
+  --ark-duration-instant: 90ms;
+  --ark-duration-fast: 140ms;
+  --ark-duration-base: 200ms;
+  --ark-duration-slow: 320ms;
+  --ark-duration-reveal: 520ms;
+  --ark-duration-ambient: 24s;
+  --ark-duration-ambient-slow: 60s;
+
+  /* Standard: most state changes. Decelerating, so motion settles rather than
+     stopping abruptly. */
+  --ark-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Entering: something arriving should decelerate into place. */
+  --ark-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Leaving: something departing should accelerate away and get out of the way. */
+  --ark-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --ark-transition: var(--ark-duration-fast) var(--ark-ease);
+
+  /* Shared layout measures, so the nav, the page and the footer align to the
+     same grid without each restating the number. */
+  --ark-measure: 1200px;
+  --ark-measure-app: 1120px;
+}
+
+/*
+ * Light mode.
+ *
+ * Ark's canonical surface is dark, so that is the default above rather than a
+ * media-query afterthought. Light is supported by redefining the same tokens —
+ * which is the point of having tokens (§54).
+ *
+ * The accents change character here out of necessity: chartreuse on white is
+ * unreadable, so action becomes a deep ink-green that holds the same "one
+ * unmistakable accent" role, and display type drops the peach for a warm brown
+ * that survives on a light ground.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ark-background: #f3fbfd;
+    --ark-surface: #ffffff;
+    --ark-surface-elevated: #f8fdff;
+    --ark-surface-glass: rgb(255 255 255 / 82%);
+
+    --ark-text-primary: #071a22;
+    --ark-text-secondary: #385b68;
+    --ark-text-muted: #66838e;
+
+    --ark-border: rgb(8 126 164 / 13%);
+    --ark-border-strong: rgb(8 126 164 / 24%);
+
+    --ark-primary: #087ea4;
+    --ark-primary-hover: #066b8d;
+    --ark-primary-contrast: #ffffff;
+    --ark-primary-dim: rgb(8 126 164 / 10%);
+    --ark-secondary: #6d28d9;
+    --ark-secondary-dim: rgb(109 40 217 / 9%);
+
+    --ark-metal: linear-gradient(
+      145deg,
+      #1a9bc3 0%,
+      #087ea4 38%,
+      #05627f 58%,
+      #0b89b1 82%,
+      #21a5cc 100%
+    );
+    --ark-metal-hover: linear-gradient(
+      145deg,
+      #35b5db 0%,
+      #1294bb 38%,
+      #087494 58%,
+      #1aa2c9 82%,
+      #42bee1 100%
+    );
+
+    --ark-display-ink: #5b21b6;
+
+    --ark-success: #1a8f63;
+    --ark-warning: #a97514;
+    --ark-error: #c0362c;
+    --ark-info: #2563c7;
+
+    --ark-shadow-card: 0 1px 2px rgb(16 24 40 / 6%), 0 8px 24px rgb(16 24 40 / 8%);
+    --ark-shadow-float: 0 18px 48px rgb(16 24 40 / 12%), 0 2px 8px rgb(16 24 40 / 8%);
+    --ark-shadow-glow: 0 0 0 1px rgb(8 126 164 / 24%), 0 12px 40px rgb(8 126 164 / 14%);
+  }
+}
+
+:root[data-theme="light"] {
+  --ark-background: #f3fbfd;
+  --ark-surface: #ffffff;
+  --ark-surface-elevated: #f8fdff;
+  --ark-surface-glass: rgb(255 255 255 / 82%);
+  --ark-text-primary: #071a22;
+  --ark-text-secondary: #385b68;
+  --ark-text-muted: #66838e;
+  --ark-border: rgb(8 126 164 / 13%);
+  --ark-border-strong: rgb(8 126 164 / 24%);
+  --ark-primary: #087ea4;
+  --ark-primary-hover: #066b8d;
+  --ark-primary-contrast: #ffffff;
+  --ark-primary-dim: rgb(8 126 164 / 10%);
+  --ark-secondary: #6d28d9;
+  --ark-secondary-dim: rgb(109 40 217 / 9%);
+  --ark-metal: linear-gradient(
+    145deg,
+    #1a9bc3 0%,
+    #087ea4 38%,
+    #05627f 58%,
+    #0b89b1 82%,
+    #21a5cc 100%
+  );
+  --ark-metal-hover: linear-gradient(
+    145deg,
+    #35b5db 0%,
+    #1294bb 38%,
+    #087494 58%,
+    #1aa2c9 82%,
+    #42bee1 100%
+  );
+  --ark-display-ink: #5b21b6;
+  --ark-success: #1a8f63;
+  --ark-warning: #a97514;
+  --ark-error: #c0362c;
+  --ark-info: #2563c7;
+  --ark-shadow-card: 0 1px 2px rgb(16 24 40 / 6%), 0 8px 24px rgb(16 24 40 / 8%);
+  --ark-shadow-float: 0 18px 48px rgb(16 24 40 / 12%), 0 2px 8px rgb(16 24 40 / 8%);
+  --ark-shadow-glow: 0 0 0 1px rgb(8 126 164 / 24%), 0 12px 40px rgb(8 126 164 / 14%);
+}

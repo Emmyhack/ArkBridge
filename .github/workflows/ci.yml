@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  typescript:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test
+
+  contracts:
+    name: Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Build
+        run: forge build --sizes
+        working-directory: packages/contracts
+
+      - name: Format
+        run: forge fmt --check
+        working-directory: packages/contracts
+
+      - name: Test
+        run: forge test -vvv
+        working-directory: packages/contracts
+
+      - name: Invariants
+        run: forge test --match-path "test/invariant/**" -vvv
+        working-directory: packages/contracts
+
+      - name: Regression suite
+        run: forge test --match-path "test/regression/**" -vvv
+        working-directory: packages/contracts
+
+      - name: Coverage summary
+        run: forge coverage --report summary --no-match-coverage "(test|script)"
+        working-directory: packages/contracts
+        continue-on-error: true
+
+  configuration:
+    name: Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # Validates every environment's chain, token and route registries against
+      # the structural invariants, with deployment artifacts folded in. Fails on
+      # an unconfigured-but-enabled chain, a route that does not touch the hub,
+      # an asset with more than one backing chain, a mock in production, and so on.
+      - name: Validate registries
+        run: pnpm validate:config
+
+  security:
+    name: Security checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Transitive advisories are pinned out via pnpm.overrides in the root
+      # package.json. One exception is recorded in pnpm.auditConfig.ignoreCves:
+      # CVE-2026-41907 (uuid <11.1.1) reaches us only through MetaMask's SDK,
+      # and clearing it would mean forcing uuid v8/v9 to v11 underneath the
+      # wallet connectors — a multi-major bump in the connect path to fix a
+      # bounds check that only triggers when a `buf` argument is passed, which
+      # that call path never does. Revisit when MetaMask bumps upstream.
+      - name: Audit dependencies
+        run: pnpm audit --audit-level moderate

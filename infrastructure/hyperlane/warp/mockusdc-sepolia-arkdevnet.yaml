@@ -1,0 +1,38 @@
+# Warp route: Sepolia MockUSDC  <->  Ark Constellation Devnet
+#
+# Sepolia holds the canonical asset as COLLATERAL; Ark holds a SYNTHETIC
+# representation minted only against locked collateral. The synthetic is not
+# "USDC on Ark" — it is an ArkBridge-issued claim on collateral locked on
+# Sepolia, and the UI must say so.
+#
+# ⚠ interchainSecurityModule is set EXPLICITLY on both sides.
+#
+# A router that implements interchainSecurityModule() overrides the Mailbox
+# default for messages addressed to it. Phase 3 showed this the hard way: Ark's
+# testRecipient kept pointing at a decommissioned trustedRelayerIsm after the
+# Mailbox default was replaced, and stayed forgeable until fixed. Leaving these
+# unset would mean a router silently inheriting whatever the default happens to
+# be later. On a collateral router that is the difference between a bridge and
+# an open mint.
+
+sepolia:
+  type: collateral
+  token: "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742"
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  # ArkBridge's 2-of-3 over the validators watching Ark. Verifies messages
+  # arriving FROM Ark (burn -> release collateral). Sepolia's Mailbox default is
+  # owned by Abacus Works and is not ours to set.
+  interchainSecurityModule: "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd"
+
+arkdevnet:
+  type: synthetic
+  mailbox: "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68"
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  name: Mock USD Coin
+  symbol: MockUSDC
+  decimals: 6
+  # ArkBridge's 2-of-3 over the validators watching Sepolia. Verifies messages
+  # arriving FROM Sepolia (lock -> mint synthetic). Pinned rather than left to
+  # inherit the Mailbox default, even though the default currently routes here.
+  interchainSecurityModule: "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6"

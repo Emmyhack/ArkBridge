@@ -1,0 +1,488 @@
+@import "@arkbridge/ui/styles.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Tells the browser which scrollbars/form controls to render. */
+  color-scheme: dark light;
+}
+
+body {
+  background: var(--ark-background);
+  color: var(--ark-text-primary);
+  font-family: var(--ark-font-sans);
+  font-size: var(--ark-text-body);
+  line-height: var(--ark-text-body-lh);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* No horizontal page scroll, ever (§142, §154). */
+  overflow-x: hidden;
+}
+
+/*
+ * TYPE ROLES
+ *
+ * Applied as classes so a component states which role it is using, rather than
+ * restating a size and weight and drifting from every other component that
+ * meant the same thing.
+ */
+/*
+ * Hero and Section are the marketing register: type large enough that it *is*
+ * the layout. They take the peach display ink, which appears nowhere else, so
+ * a heading is never mistaken for something pressable.
+ */
+.ark-hero {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-hero);
+  line-height: var(--ark-text-hero-lh);
+  font-weight: 500;
+  /* Very large type needs tighter tracking than the metrics ship with,
+     otherwise the words read as separated letters rather than a phrase. */
+  letter-spacing: -0.035em;
+  color: var(--ark-display-ink);
+  margin: 0;
+}
+
+.ark-section-title {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-section);
+  line-height: var(--ark-text-section-lh);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ark-display-ink);
+  margin: 0;
+}
+
+/* The standfirst under a hero. Secondary ink, not muted: it is meant to be
+   read, it is simply not the headline. */
+.ark-lead {
+  font-size: var(--ark-text-lead);
+  line-height: var(--ark-text-lead-lh);
+  color: var(--ark-text-secondary);
+  margin: 0;
+}
+
+/*
+ * A clause promoted inside body copy — the sentence that carries the claim.
+ *
+ * It used to take the accent colour. That worked when the accent was
+ * chartreuse and stopped working the moment the palette went monochrome: the
+ * platinum accent sits close enough to the body grey that a coloured lead-in
+ * would have been a difference nobody could see. In a monochrome scheme
+ * promotion comes from brightness and weight, not hue — so the lead-in steps
+ * *up* to the primary ink while the paragraph around it stays secondary.
+ */
+.ark-lead-in {
+  color: var(--ark-text-primary);
+  font-weight: 600;
+}
+
+.ark-display {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-display);
+  line-height: var(--ark-text-display-lh);
+  font-weight: 600;
+  /* Large type needs negative tracking to avoid looking loose. */
+  letter-spacing: -0.03em;
+}
+
+.ark-heading {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-heading);
+  line-height: var(--ark-text-heading-lh);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.ark-subheading {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  line-height: var(--ark-text-subheading-lh);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ark-body {
+  font-size: var(--ark-text-body);
+  line-height: var(--ark-text-body-lh);
+}
+
+.ark-body-sm {
+  font-size: var(--ark-text-body-sm);
+  line-height: var(--ark-text-body-sm-lh);
+}
+
+/* Section labels: small, spaced, uppercase. Used for the eyebrow above a group
+   rather than for anything a user reads as a sentence. */
+.ark-label {
+  font-size: var(--ark-text-label);
+  line-height: var(--ark-text-label-lh);
+  font-weight: 600;
+  letter-spacing: var(--ark-text-label-tracking);
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+.ark-caption {
+  font-size: var(--ark-text-caption);
+  line-height: var(--ark-text-caption-lh);
+  color: var(--ark-text-muted);
+}
+
+/* Numbers that update in place — balances, quotes, stats — use tabular figures
+   so digits do not shift width as values change. */
+.ark-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Page titles take the display ink.
+ *
+ * One rule rather than a `color` line in each page's stylesheet, because the
+ * intent is a *rule* — an h1 is the name of the page and always reads in the
+ * peach — and repeating it per file is how that intent gets forgotten on the
+ * seventh page. Section headings inside the application deliberately stay in
+ * the primary ink: peach on every heading level would flatten the hierarchy
+ * back to nothing.
+ */
+h1 {
+  color: var(--ark-display-ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/*
+ * Focus is always visible (§118). Removing the outline without replacing it
+ * makes the app unusable by keyboard, which for a custody interface is not a
+ * cosmetic failure.
+ */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ark-focus-ring);
+  border-radius: var(--ark-radius-sm);
+}
+
+/* Addresses, hashes and message ids only (§55). */
+.ark-mono {
+  font-family: var(--ark-font-mono);
+  /* Ligatures off: an address is a sequence of characters to be compared, not
+     prose to be read. */
+  font-variant-ligatures: none;
+  font-size: 0.92em;
+  letter-spacing: -0.01em;
+}
+
+.ark-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Respect a user's stated preference for less motion (§59, §118). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+ * MOTION
+ *
+ * Defined once, globally, so a component cannot invent its own easing and drift
+ * out of step with the rest of the interface.
+ */
+
+/* Content arriving: rises slightly and fades in. The offset is small (8px) —
+   enough to read as "this came from below", not enough to feel like a slide. */
+@keyframes ark-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Dialogs scale from 98%, not from 0. Growing from nothing reads as a popup
+   appearing; growing from near-full-size reads as a panel coming forward. */
+@keyframes ark-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ark-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The active step in a sequence. A slow, shallow pulse says "still working"
+   without demanding attention the way a spinner does. */
+@keyframes ark-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Completion. Runs once, briefly — a confirmation, not a celebration. */
+@keyframes ark-confirm {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* A value that changed. Used on quote figures so an updated number is noticed
+   without the layout moving. */
+@keyframes ark-flash {
+  from {
+    background-color: color-mix(in srgb, var(--ark-primary) 22%, transparent);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.ark-rise {
+  animation: ark-rise var(--ark-duration-base) var(--ark-ease-out) both;
+}
+
+.ark-confirm {
+  animation: ark-confirm var(--ark-duration-slow) var(--ark-ease-out) both;
+}
+
+.ark-flash {
+  animation: ark-flash var(--ark-duration-slow) var(--ark-ease) both;
+  border-radius: var(--ark-radius-sm);
+}
+
+/*
+ * Scroll reveal.
+ *
+ * Below-the-fold content starts slightly lowered and transparent, and settles
+ * when it enters the viewport. Applied via IntersectionObserver rather than on
+ * a timer, so content a user scrolls straight past does not animate late.
+ *
+ * The initial state is only applied once JS has marked the document ready —
+ * otherwise a user with JS disabled or still loading would see nothing at all.
+ */
+[data-reveal-ready="true"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--ark-duration-reveal) var(--ark-ease-out),
+    transform var(--ark-duration-reveal) var(--ark-ease-out);
+}
+
+[data-reveal-ready="true"] [data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Reduced motion.
+ *
+ * Not "slightly less" — off. A vestibular trigger is not a preference to be
+ * partially honoured, and every one of these animations is decorative by
+ * design, so removing them costs nothing (§59, §118).
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-ready="true"] [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ark-rise,
+  .ark-confirm,
+  .ark-flash {
+    animation: none;
+  }
+}
+
+/*
+ * =========================================================================
+ * AMBIENT MOTION
+ * =========================================================================
+ *
+ * A second, separate class of animation from the ones above, with different
+ * rules. The interaction animations are short, one-shot and tied to something
+ * the user did. These are long, looping and tied to nothing — they exist to
+ * keep the marketing surface from reading as a static screenshot.
+ *
+ * Because they never stop, they are held to a stricter standard: no opacity
+ * swing wide enough to catch peripheral vision, no movement fast enough to
+ * track, and every one of them is disabled outright under reduced-motion. If
+ * an ambient loop is noticeable while you are reading the paragraph next to
+ * it, it is wrong.
+ */
+
+/* Orbit: a token travelling a ring. The transform origin is set by the element
+   so one keyframe serves every radius. */
+@keyframes ark-orbit {
+  from {
+    transform: rotate(0deg) translateX(var(--ark-orbit-radius, 120px)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--ark-orbit-radius, 120px)) rotate(-360deg);
+  }
+}
+
+/* The counter-rotation on the inner transform keeps the orbiting element
+   upright — without it a token glyph would tumble as it travels. */
+
+@keyframes ark-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dashed paths that read as flow direction. Animating dash-offset rather than
+   position means nothing moves in layout, so it cannot cause reflow. */
+@keyframes ark-dash-flow {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+/* A soft breathing glow behind a focal element. The range is deliberately
+   narrow (0.45 → 0.7) — enough to feel alive, not enough to pulse. */
+@keyframes ark-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.04);
+  }
+}
+
+/* Menus and popovers: come forward out of a blur rather than sliding, which
+   suits a panel that is conceptually already there and being revealed. */
+@keyframes ark-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Panel content swapping under a tab strip. Crossfade with a shallow rise:
+   the panel frame stays put, only what is inside it changes. */
+@keyframes ark-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ark-menu-in {
+  animation: ark-menu-in var(--ark-duration-base) var(--ark-ease-out) both;
+}
+
+.ark-panel-in {
+  animation: ark-panel-in var(--ark-duration-slow) var(--ark-ease-out) both;
+}
+
+/*
+ * Staggered reveals.
+ *
+ * A group of cards entering together reads as one block dropping in; entering
+ * 60ms apart reads as a sequence, which is what a reader's eye is doing anyway.
+ * The cap at index 7 stops a long list from having a visible wait at the end —
+ * beyond about half a second the last item feels broken rather than staggered.
+ */
+[data-reveal-index="1"] {
+  transition-delay: 60ms;
+}
+[data-reveal-index="2"] {
+  transition-delay: 120ms;
+}
+[data-reveal-index="3"] {
+  transition-delay: 180ms;
+}
+[data-reveal-index="4"] {
+  transition-delay: 240ms;
+}
+[data-reveal-index="5"] {
+  transition-delay: 300ms;
+}
+[data-reveal-index="6"] {
+  transition-delay: 360ms;
+}
+[data-reveal-index="7"] {
+  transition-delay: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ark-menu-in,
+  .ark-panel-in {
+    animation: none;
+  }
+
+  [data-reveal-index] {
+    transition-delay: 0ms !important;
+  }
+}

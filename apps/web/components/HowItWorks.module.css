@@ -1,0 +1,74 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-6);
+  max-width: 900px;
+  margin: var(--ark-space-16) auto 0;
+  padding-top: var(--ark-space-12);
+  border-top: 1px solid var(--ark-border);
+}
+
+.heading {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  /* Larger and in the display ink: this block is the one part of the bridge
+     page that is explaining rather than transacting, and it should read as
+     the same kind of section as the ones on the landing page. */
+  font-size: var(--ark-text-display);
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: -0.02em;
+  color: var(--ark-display-ink);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ark-space-4);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-5);
+  background: var(--ark-surface);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+}
+
+.number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--ark-primary);
+  border-radius: var(--ark-radius-full);
+  color: var(--ark-primary);
+  font-size: var(--ark-text-label);
+  font-weight: 700;
+}
+
+.stepTitle {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+}
+
+.stepBody {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+  line-height: 1.6;
+}
+
+@media (max-width: 880px) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

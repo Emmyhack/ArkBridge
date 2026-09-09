@@ -1,0 +1,122 @@
+.wrap {
+  display: grid;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-3) var(--ark-space-4);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+  background: var(--ark-background);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ark-space-3);
+}
+
+.label {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+.recommend {
+  padding: 3px var(--ark-space-3);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-sm);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-caption);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    border-color var(--ark-transition);
+}
+
+.recommend:hover {
+  color: var(--ark-primary);
+  border-color: color-mix(in srgb, var(--ark-primary) 50%, transparent);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ark-space-2);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-heading);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input:disabled {
+  color: var(--ark-text-secondary);
+}
+
+.input::placeholder {
+  color: var(--ark-text-muted);
+}
+
+.unit {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+/* Folded into the header row: the live reading is context for the number being
+   typed, not a separate statement under it. */
+.current {
+  margin-left: auto;
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-secondary);
+  white-space: nowrap;
+}
+
+.arm,
+.cancel {
+  padding: var(--ark-space-2) var(--ark-space-3);
+  border-radius: var(--ark-radius-md);
+  border: 1px solid var(--ark-border-strong);
+  background: transparent;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color var(--ark-transition),
+    color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.arm:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--ark-primary) 50%, transparent);
+  background: var(--ark-primary-dim);
+}
+
+.arm:disabled {
+  color: var(--ark-text-muted);
+  border-color: var(--ark-border);
+  cursor: not-allowed;
+}
+
+.cancel {
+  border-color: color-mix(in srgb, var(--ark-warning) 45%, transparent);
+  color: var(--ark-warning);
+}
+
+.caveat {
+  margin: 0;
+  font-size: var(--ark-text-caption);
+  line-height: 1.5;
+  color: var(--ark-text-muted);
+}
