@@ -6,7 +6,23 @@ const a = JSON.parse(readFileSync("../../deployments/testnet/ark-devnet.json", "
 const s = JSON.parse(readFileSync("../../deployments/testnet/sepolia.json", "utf8")).contracts;
 
 const read = async (client, to, sig) => {
-  const r = await client.call({ to, data: encodeFunctionData({ abi: [{ type: "function", name: sig, inputs: [], outputs: [{ type: "address" }], stateMutability: "view" }], functionName: sig }) }).catch(() => null);
+  const r = await client
+    .call({
+      to,
+      data: encodeFunctionData({
+        abi: [
+          {
+            type: "function",
+            name: sig,
+            inputs: [],
+            outputs: [{ type: "address" }],
+            stateMutability: "view",
+          },
+        ],
+        functionName: sig,
+      }),
+    })
+    .catch(() => null);
   return r?.data && r.data !== "0x" ? "0x" + r.data.slice(-40) : null;
 };
 
@@ -27,5 +43,8 @@ console.log("   mailbox defaultIsm  :", named(await read(ark, a.mailbox, "defaul
 
 console.log("=== SEPOLIA collateral router ===");
 console.log("   hook :", named(await read(sep, s.mockUsdcCollateralRouter, "hook"), s));
-console.log("   ism  :", named(await read(sep, s.mockUsdcCollateralRouter, "interchainSecurityModule"), s));
+console.log(
+  "   ism  :",
+  named(await read(sep, s.mockUsdcCollateralRouter, "interchainSecurityModule"), s),
+);
 console.log("   mailbox defaultHook :", named(await read(sep, s.mailbox, "defaultHook"), s));

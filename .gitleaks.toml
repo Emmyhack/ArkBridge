@@ -1,0 +1,16 @@
+# Secret scanning config for CI (.github/workflows/ci.yml, "Security checks").
+#
+# Extends gitleaks' default ruleset rather than replacing it: everything the
+# stock rules catch still fails the build.
+[extend]
+useDefault = true
+
+# The generic-api-key rule keys off names like `token`, which in this repo is an
+# ERC-20 contract address in a deployment artifact or a Hyperlane warp-route
+# config — published on-chain data, not a credential. The pattern below is
+# anchored to exactly 40 hex characters, the width of an EVM address. A private
+# key is 64 and a mnemonic is words, so neither can match here; they stay caught.
+[[allowlists]]
+description = "EVM contract addresses in deployment artifacts and registry configs"
+regexTarget = "secret"
+regexes = ['''^0x[a-fA-F0-9]{40}$''']

@@ -650,7 +650,6 @@ export function BridgeShell({
           </p>
         )}
       </section>
-
     </div>
   );
 }

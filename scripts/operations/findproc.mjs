@@ -12,7 +12,12 @@ let found = null;
 // certain to still be in the node's retained history.
 for (let end = latest; end > 0n && found === null; end -= WINDOW) {
   const start = end > WINDOW ? end - WINDOW : 0n;
-  const logs = await client.getLogs({ address: MAILBOX, event: ev, fromBlock: start, toBlock: end });
+  const logs = await client.getLogs({
+    address: MAILBOX,
+    event: ev,
+    fromBlock: start,
+    toBlock: end,
+  });
   if (logs.length > 0) found = logs[logs.length - 1];
   if (latest - end > 120000n) break;
 }

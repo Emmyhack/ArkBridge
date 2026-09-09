@@ -63,7 +63,12 @@ export default tseslint.config(
     // stdout is their job rather than a stray debug statement.
     files: ["scripts/**/*.mjs"],
     languageOptions: {
-      globals: { console: "readonly", process: "readonly", setTimeout: "readonly" },
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        setTimeout: "readonly",
+        fetch: "readonly",
+      },
     },
     rules: {
       // These are CLIs: writing to stdout is their job.

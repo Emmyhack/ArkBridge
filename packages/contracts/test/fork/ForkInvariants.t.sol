@@ -178,7 +178,9 @@ contract ForkInvariantsTest is Test {
         // MESSAGE_ID_MULTISIG (5) or MERKLE_ROOT_MULTISIG (4) — either is a
         // signature threshold. NULL (0) and UNUSED are not.
         uint8 moduleType = IInterchainSecurityModule(ism).moduleType();
-        assertTrue(moduleType == 4 || moduleType == 5 || moduleType == 2, "release ISM is not a multisig or aggregation");
+        assertTrue(
+            moduleType == 4 || moduleType == 5 || moduleType == 2, "release ISM is not a multisig or aggregation"
+        );
     }
 
     /// Strips the 4-byte selector and decodes `process(bytes,bytes)`.

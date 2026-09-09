@@ -1,8 +1,15 @@
 import { createPublicClient, http } from "viem";
 import { readFileSync } from "node:fs";
 const client = createPublicClient({ transport: http(process.env.ARK_RPC_URL) });
-const onchain = (await client.getCode({ address: "0x3155E3658841a0B9Ea59F3Cb3A55040481ad1cF7" })).replace(/^0x/, "");
-const art = JSON.parse(readFileSync("../../packages/contracts/out/ArkBridgeGuardHook.sol/ArkBridgeGuardHook.json", "utf8"));
+const onchain = (
+  await client.getCode({ address: "0x3155E3658841a0B9Ea59F3Cb3A55040481ad1cF7" })
+).replace(/^0x/, "");
+const art = JSON.parse(
+  readFileSync(
+    "../../packages/contracts/out/ArkBridgeGuardHook.sol/ArkBridgeGuardHook.json",
+    "utf8",
+  ),
+);
 const local = art.deployedBytecode.object.replace(/^0x/, "");
 
 // PUSH4 (0x63) immediates in the dispatcher are the function selectors.
@@ -23,8 +30,18 @@ for (const item of art.abi) {
   names.set(toFunctionSelector(sig), sig);
 }
 
-const a = selectors(onchain), b = selectors(local);
+const a = selectors(onchain),
+  b = selectors(local);
 const only = (x, y) => [...x].filter((s) => !y.has(s)).filter((s) => names.has(s));
-console.log("selectors only on-chain :", only(a, b).map((s) => names.get(s)));
-console.log("selectors only in source:", only(b, a).map((s) => names.get(s)));
-console.log("shared, known           :", [...a].filter((s) => b.has(s) && names.has(s)).map((s) => names.get(s)));
+console.log(
+  "selectors only on-chain :",
+  only(a, b).map((s) => names.get(s)),
+);
+console.log(
+  "selectors only in source:",
+  only(b, a).map((s) => names.get(s)),
+);
+console.log(
+  "shared, known           :",
+  [...a].filter((s) => b.has(s) && names.has(s)).map((s) => names.get(s)),
+);

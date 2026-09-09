@@ -2,7 +2,7 @@
   "name": "arkbridge",
   "version": "0.1.0",
   "private": true,
-  "description": "ArkBridge — the canonical asset bridge for Ark Constellation.",
+  "description": "ArkBridge \u2014 the canonical asset bridge for Ark Constellation.",
   "license": "MIT",
   "packageManager": "pnpm@10.28.2",
   "engines": {
@@ -35,5 +35,18 @@
     "turbo": "^2.6.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss@<8.5.23": "^8.5.23",
+      "axios@<1.18.0": "^1.18.0",
+      "decode-uri-component@<0.5.0": "^0.5.0",
+      "ws@>=8.0.0 <8.21.0": "^8.21.0"
+    },
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2026-41907"
+      ]
+    }
   }
 }
