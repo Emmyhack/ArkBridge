@@ -1,0 +1,106 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ark-space-2);
+  padding: 14px var(--ark-space-8);
+  border-radius: var(--ark-radius-full);
+  border: 1px solid transparent;
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-lead);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--ark-transition),
+    border-color var(--ark-transition),
+    color var(--ark-transition),
+    transform var(--ark-duration-base) var(--ark-ease-out),
+    box-shadow var(--ark-duration-base) var(--ark-ease);
+}
+
+.pill:hover {
+  /* One pixel. Enough to register as a response to the pointer, not enough to
+     shift the line of text next to it. */
+  transform: translateY(-1px);
+}
+
+.pill:active {
+  transform: translateY(0);
+}
+
+/*
+ * The one filled control on the page, and the only place the metal ramp is
+ * used at size. The inset highlight along the top edge is what sells it: a
+ * gradient alone reads as a fade, a gradient with a bright hairline on its
+ * upper edge reads as a lit surface.
+ */
+.solid {
+  background: var(--ark-metal);
+  color: var(--ark-primary-contrast);
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 65%);
+}
+
+.solid:hover {
+  background: var(--ark-metal-hover);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 75%),
+    var(--ark-shadow-glow);
+}
+
+.outline {
+  border-color: var(--ark-border-strong);
+  color: var(--ark-text-primary);
+}
+
+.outline:hover {
+  border-color: color-mix(in srgb, var(--ark-primary) 50%, transparent);
+  color: var(--ark-primary);
+  background: var(--ark-primary-dim);
+}
+
+.large {
+  padding: 18px var(--ark-space-12);
+  font-size: var(--ark-text-lead);
+}
+
+.quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ark-primary);
+  font-size: var(--ark-text-lead);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+  transition:
+    color var(--ark-transition),
+    text-decoration-color var(--ark-transition);
+}
+
+.quiet:hover {
+  color: var(--ark-primary-hover);
+  text-decoration-style: solid;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  margin: 0 0 var(--ark-space-6);
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  color: var(--ark-text-secondary);
+}
+
+.eyebrow svg {
+  color: var(--ark-primary);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill:hover {
+    transform: none;
+  }
+}

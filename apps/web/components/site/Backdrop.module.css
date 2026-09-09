@@ -1,0 +1,110 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Paint containment keeps this on its own layer so content above it never
+     repaints because of it. Size containment is deliberately not included —
+     this element takes its size from the viewport, not its contents. */
+  contain: layout paint style;
+}
+
+.field {
+  position: absolute;
+  inset: -10%;
+  filter: blur(90px);
+}
+
+.block {
+  position: absolute;
+  display: block;
+  background: var(--ark-primary);
+  border-radius: 4px;
+}
+
+/* Placed by hand rather than generated. The asymmetry is the point — an even
+   distribution reads as a pattern, and a pattern asks to be looked at. */
+.block[data-block="a"] {
+  top: -4%;
+  left: 8%;
+  width: 20%;
+  height: 46%;
+  opacity: 0.05;
+}
+
+.block[data-block="b"] {
+  top: 12%;
+  left: 26%;
+  width: 30%;
+  height: 34%;
+  opacity: 0.035;
+  background: var(--ark-secondary);
+}
+
+.block[data-block="c"] {
+  top: -8%;
+  right: 14%;
+  width: 24%;
+  height: 52%;
+  opacity: 0.055;
+}
+
+.block[data-block="d"] {
+  top: 34%;
+  right: 4%;
+  width: 16%;
+  height: 26%;
+  opacity: 0.03;
+  background: var(--ark-secondary);
+}
+
+.block[data-block="e"] {
+  top: 2%;
+  left: 46%;
+  width: 12%;
+  height: 62%;
+  opacity: 0.04;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--ark-primary) 8%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ark-primary) 8%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 96px 96px;
+  /* Fades out toward the bottom and the edges so the lines never terminate in
+     a hard cut, which would look like a rendering error. */
+  mask-image: radial-gradient(120% 80% at 50% 0%, var(--ark-mask-opaque) 0%, transparent 75%);
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 60% at 50% 0%, transparent 0%, var(--ark-background) 82%),
+    linear-gradient(to bottom, transparent 40%, var(--ark-background) 100%);
+}
+
+/* On a light ground the same blocks would be invisible at these opacities and
+   the grid would be dirt on the screen. Light mode gets the vignette only. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .field,
+  :root:not([data-theme="dark"]) .grid {
+    display: none;
+  }
+}
+
+:root[data-theme="light"] .field,
+:root[data-theme="light"] .grid {
+  display: none;
+}

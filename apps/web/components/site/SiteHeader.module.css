@@ -1,0 +1,491 @@
+/*
+ * The floating navigation pill.
+ *
+ * `position: sticky` on a wrapper with padding, rather than `fixed`, so the bar
+ * still occupies layout space at the top of the document and the first section
+ * is not hidden underneath it on load.
+ */
+.dock {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: var(--ark-space-2) var(--ark-space-5) 0;
+  /* The dock spans the viewport for stickiness but must not intercept clicks in
+     the empty space either side of the pill. */
+  pointer-events: none;
+}
+
+.bar {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-4);
+  max-width: var(--ark-measure);
+  margin: 0 auto;
+  padding: var(--ark-space-3) var(--ark-space-3) var(--ark-space-3) var(--ark-space-5);
+  border-radius: var(--ark-radius-full);
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--ark-surface) 70%, transparent);
+  backdrop-filter: blur(16px);
+  transition:
+    border-color var(--ark-duration-base) var(--ark-ease),
+    background-color var(--ark-duration-base) var(--ark-ease),
+    box-shadow var(--ark-duration-base) var(--ark-ease);
+}
+
+/* At rest over the hero the pill is nearly invisible; once content scrolls
+   beneath it, it earns an edge. */
+.dock[data-scrolled="true"] .bar {
+  border-color: var(--ark-border);
+  background: color-mix(in srgb, var(--ark-surface) 88%, transparent);
+  box-shadow: var(--ark-shadow-float);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  flex: none;
+  color: var(--ark-text-primary);
+}
+
+.mark {
+  width: 26px;
+  height: 26px;
+  color: var(--ark-primary);
+  flex: none;
+  transition: transform var(--ark-duration-slow) var(--ark-ease-out);
+}
+
+.brand:hover .mark {
+  transform: translateY(-1px) scale(1.04);
+}
+
+.wordmark {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-1);
+  margin: 0 auto;
+}
+
+/* Each item is the hover target for its own panel, and the panel is positioned
+   against it — so the gap between trigger and panel stays inside the item and
+   the pointer never leaves it in transit. */
+.navItem {
+  position: relative;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-2) var(--ark-space-4);
+  border: none;
+  border-radius: var(--ark-radius-full);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.trigger:hover,
+.trigger[data-open="true"] {
+  color: var(--ark-primary);
+  background: var(--ark-primary-dim);
+}
+
+.chevron {
+  transition: transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+.trigger[data-open="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/*
+ * The dropped panel.
+ *
+ * The 8px top offset is the visual gap; the ::before below fills it with an
+ * invisible bridge so a pointer travelling from the trigger to the panel does
+ * not cross dead space and trigger the close timer.
+ */
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  gap: var(--ark-space-5);
+  min-width: 320px;
+  padding: var(--ark-space-4);
+  border-radius: var(--ark-radius-xl);
+  border: 1px solid var(--ark-border);
+  /*
+   * Nearly opaque, not glass.
+   *
+   * The first pass used the shared 72% glass token and the hero headline —
+   * 84px of peach directly behind the menu — read straight through it. Blur
+   * does not save you there: blurring type that large leaves large soft
+   * shapes, which is exactly the contrast range the menu's own labels occupy.
+   * A dropdown has to be readable over whatever it lands on, so it gets its
+   * own near-solid fill and keeps the blur only for the edges.
+   */
+  background: color-mix(in srgb, var(--ark-surface-elevated) 96%, transparent);
+  backdrop-filter: blur(28px) saturate(140%);
+  box-shadow: var(--ark-shadow-float);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0 100%;
+}
+
+.panel[data-wide="true"] {
+  grid-template-columns: minmax(270px, 1fr) minmax(330px, 1fr);
+  min-width: 700px;
+}
+
+.panelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  padding: var(--ark-space-3);
+  border-radius: var(--ark-radius-md);
+  transition: background-color var(--ark-transition);
+}
+
+.row:hover {
+  background: rgb(255 255 255 / 5%);
+}
+
+.rowIcon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: var(--ark-radius-md);
+  border: 1px solid var(--ark-border);
+  background: rgb(255 255 255 / 4%);
+  color: var(--ark-primary);
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.row:hover .rowIcon {
+  border-color: color-mix(in srgb, var(--ark-primary) 40%, transparent);
+  background: var(--ark-primary-dim);
+}
+
+.rowText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  color: var(--ark-text-primary);
+}
+
+.rowDescription {
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+/* The chevron slides in on hover rather than sitting there permanently, so the
+   row is a calm list until you address it. */
+.rowChevron {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  color: var(--ark-text-muted);
+  opacity: 0;
+  transform: rotate(-90deg) translateY(4px);
+  transition:
+    opacity var(--ark-transition),
+    transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+.row:hover .rowChevron {
+  opacity: 1;
+  transform: rotate(-90deg) translateY(0);
+}
+
+/* The second column, separated by a rule rather than a background change —
+   quieter, and it survives the panel being translucent. */
+.feature {
+  padding-left: var(--ark-space-5);
+  border-left: 1px solid var(--ark-border);
+}
+
+.featureTitle {
+  margin: var(--ark-space-2) 0 var(--ark-space-4);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ark-text-primary);
+}
+
+.featureGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Equal rows, so one long label cannot make its row taller than the rest and
+     leave the card beside it stretched with air under its text. */
+  grid-auto-rows: 1fr;
+  gap: var(--ark-space-2);
+}
+
+.featureCard {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  padding: var(--ark-space-3);
+  border-radius: var(--ark-radius-md);
+  border: 1px solid var(--ark-border);
+  background: rgb(255 255 255 / 3%);
+  font-size: var(--ark-text-body);
+  white-space: nowrap;
+  color: var(--ark-text-secondary);
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition),
+    color var(--ark-transition),
+    transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+.featureCard:hover {
+  border-color: var(--ark-border-strong);
+  background: rgb(255 255 255 / 6%);
+  color: var(--ark-text-primary);
+  transform: translateY(-1px);
+}
+
+.featureIndex {
+  font-family: var(--ark-font-mono);
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  flex: none;
+}
+
+/* The primary action in the bar is an outline pill, not a filled one. The
+   filled treatment is reserved for the hero and section CTAs; a solid button
+   riding in the nav on every scroll position would out-shout the page. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--ark-space-3) var(--ark-space-6);
+  border-radius: var(--ark-radius-full);
+  border: 1px solid color-mix(in srgb, var(--ark-primary) 45%, transparent);
+  color: var(--ark-primary);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--ark-transition),
+    border-color var(--ark-transition),
+    box-shadow var(--ark-duration-base) var(--ark-ease);
+}
+
+.cta:hover {
+  background: var(--ark-primary-dim);
+  border-color: var(--ark-primary);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--ark-primary) 16%, transparent);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0 11px;
+  border-radius: var(--ark-radius-full);
+  border: 1px solid var(--ark-border);
+  background: transparent;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  height: 1.6px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--ark-text-primary);
+  transition: transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+/* Two bars, not three: the cross needs exactly two, and a middle bar that has
+   to fade out mid-animation always reads as a glitch. */
+.burger span[data-open="true"]:first-child {
+  transform: translateY(3.3px) rotate(45deg);
+}
+
+.burger span[data-open="true"]:last-child {
+  transform: translateY(-3.3px) rotate(-45deg);
+}
+
+.drawer {
+  pointer-events: auto;
+  display: none;
+  max-width: var(--ark-measure);
+  margin: var(--ark-space-3) auto 0;
+  padding: var(--ark-space-5);
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+  border-radius: var(--ark-radius-xl);
+  border: 1px solid var(--ark-border);
+  background: color-mix(in srgb, var(--ark-surface-elevated) 96%, transparent);
+  backdrop-filter: blur(28px);
+  box-shadow: var(--ark-shadow-float);
+}
+
+.drawerSection {
+  padding-bottom: var(--ark-space-4);
+  margin-bottom: var(--ark-space-4);
+  border-bottom: 1px solid var(--ark-border);
+}
+
+.drawerTitle {
+  margin: 0 0 var(--ark-space-2);
+  font-size: var(--ark-text-label);
+  font-weight: 600;
+  letter-spacing: var(--ark-text-label-tracking);
+  text-transform: uppercase;
+  color: var(--ark-text-muted);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--ark-space-3) 0;
+  font-size: var(--ark-text-lead);
+  color: var(--ark-text-primary);
+}
+
+.drawerCta {
+  display: block;
+  text-align: center;
+  padding: var(--ark-space-4);
+  border-radius: var(--ark-radius-full);
+  background: var(--ark-metal);
+  color: var(--ark-primary-contrast);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
+  font-family: var(--ark-font-display);
+  font-weight: 600;
+}
+
+/*
+ * Below 1040px the mega-menus have nowhere to go — a 660px panel centred on a
+ * trigger overflows the viewport — so the whole desktop nav is replaced by the
+ * drawer rather than being squeezed.
+ */
+@media (max-width: 1040px) {
+  .nav,
+  .walletSlot {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .drawer {
+    display: block;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .cta {
+    display: none;
+  }
+}
+
+/*
+ * Reduced motion.
+ *
+ * The distinction that matters here is between motion and end state. A
+ * reduced-motion preference is about things moving, not about things being in
+ * a different position — so every transition is removed, while the transforms
+ * that *communicate* keep their final value:
+ *
+ *   - The burger's bars still cross. Without the cross, open and closed look
+ *     identical, and a control that gives no feedback is worse than one that
+ *     animates.
+ *   - The trigger chevron still points up when its menu is open.
+ *
+ * What is removed outright is the purely decorative movement: the mark lifting
+ * on hover, the feature card lifting on hover, and the row chevron sliding in
+ * from the side — that one keeps its rotation so it still reads as pointing
+ * right, it simply stops travelling.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .brand,
+  .mark,
+  .trigger,
+  .chevron,
+  .row,
+  .rowIcon,
+  .rowChevron,
+  .burger span,
+  .featureCard,
+  .cta {
+    transition: none;
+  }
+
+  .brand:hover .mark,
+  .featureCard:hover {
+    transform: none;
+  }
+
+  .rowChevron,
+  .row:hover .rowChevron {
+    transform: rotate(-90deg);
+  }
+}

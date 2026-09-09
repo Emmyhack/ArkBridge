@@ -1,0 +1,97 @@
+# Hyperlane core deployment config for Ark Constellation Devnet.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# DEVNET BOOTSTRAP — THIS IS NOT A SECURITY MODEL
+# ─────────────────────────────────────────────────────────────────────────────
+# `defaultIsm` is a trustedRelayerIsm: a single named address may deliver any
+# message, with no validator signatures involved. That is appropriate for
+# bringing core up and smoke-testing message delivery, and for nothing else.
+#
+# Build Phase 3 replaces this with a multisig ISM over a real validator set
+# (2-of-3, distinct keys, distinct hosts). No token route may be enabled while
+# a trustedRelayerIsm is still the default — a relayer would be able to mint
+# synthetic assets on Ark without any collateral being locked.
+#
+# `owner` is the deployer EOA. Devnet only. Mainnet requires multisig ownership
+# with timelocked high-risk changes; see SECURITY.md.
+# ─────────────────────────────────────────────────────────────────────────────
+
+owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+
+defaultIsm:
+  type: domainRoutingIsm
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  domains:
+    # Messages originating on Sepolia, verified against ArkBridge's OWN
+    # validators (2-of-3). Replaced Hyperlane's 1-of-1 set for two reasons:
+    #
+    #   Security. Their Sepolia and BSC Testnet sets are both 1-of-1 and both
+    #   the same key, so one compromise forged both origins into Ark.
+    #
+    #   Liveness. Their validator publishes to a GCS bucket our relayer has no
+    #   credentials for, so inbound could not reach quorum at all.
+    sepolia:
+      type: messageIdMultisigIsm
+      validators:
+        - "0xf3BbAECB73b04dCDd0c3F8bC92bd2ccE86ff9Eb4"
+        - "0xb328A0B31016eE317f946a52cc2c19543f09a89A"
+        - "0xdcB422af44b896C9Cbdb61B820157e2dCd4C87D8"
+      threshold: 2
+    # BSC Testnet still uses Hyperlane's 1-of-1 set. It carries the exposure
+    # described above and must be migrated to ArkBridge validators the same way
+    # Sepolia was, before any BSC route is enabled.
+    bsctestnet:
+      type: messageIdMultisigIsm
+      validators:
+        - "0x3c659E0FE8d01B80d7828b421630085777346e7c"
+      threshold: 1
+
+# Posts each dispatched message into an incremental merkle tree. Validators sign
+# checkpoints of that tree, so this is what the Phase 3 multisig ISM verifies
+# against. Required now even though validators arrive later.
+defaultHook:
+  type: merkleTreeHook
+
+# Charged on every dispatch. Set to zero on devnet: a non-zero protocol fee here
+# would make every test transfer cost KASH for no purpose.
+requiredHook:
+  type: protocolFee
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  beneficiary: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  maxProtocolFee: "100000000000000000"
+  protocolFee: "0"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Declared so that `hyperlane core check` reports a clean diff and can therefore
+# be used as a drift detector. Both were deployed by `core deploy` regardless of
+# whether they appear here; leaving them undeclared made every check emit a
+# spurious diff, which trains you to ignore the output.
+# ─────────────────────────────────────────────────────────────────────────────
+
+proxyAdmin:
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+
+# ArkBridge does not use Interchain Accounts. This router is deployed by the
+# standard core deployment and is recorded here for completeness and drift
+# detection, not because the bridge depends on it.
+#
+# Note its commitmentIsm is an offchainLookupIsm pointing at a Hyperlane-operated
+# endpoint. That is an external dependency of the ICA feature only — no ArkBridge
+# transfer path touches it. If the unused surface is ever a concern, the router's
+# ownership can be renounced or its remoteRouters left permanently empty (as they
+# are now), which is what makes it inert.
+interchainAccountRouter:
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  mailbox: "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68"
+  hook: "0x0000000000000000000000000000000000000000"
+  routerType: regular
+  remoteRouters: {}
+  interchainSecurityModule:
+    type: interchainAccountRouting
+    isms: {}
+    owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  commitmentIsm:
+    type: offchainLookupIsm
+    urls:
+      - https://commitment-read-ism.hyperlane.xyz
+    owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"

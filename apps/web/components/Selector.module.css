@@ -1,0 +1,191 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  width: 100%;
+  padding: var(--ark-space-2) 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  border-radius: var(--ark-radius-md);
+  transition:
+    background-color var(--ark-transition),
+    color var(--ark-transition);
+}
+
+@media (hover: hover) {
+  .trigger:hover {
+    background: var(--ark-primary-dim);
+  }
+
+  .trigger:hover .chevron,
+  .chipTrigger:hover .chevron,
+  .tokenTrigger:hover .chevron,
+  .tokenLead:hover:not(:disabled) .chevron {
+    color: var(--ark-primary);
+  }
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.optionName {
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  color: var(--ark-text-primary);
+}
+
+.optionMeta {
+  font-size: var(--ark-text-label);
+  color: var(--ark-text-secondary);
+}
+
+/* Origin is never de-emphasised into invisibility: §28 requires it be legible. */
+.optionOrigin {
+  font-size: var(--ark-text-caption);
+  color: var(--ark-text-muted);
+}
+
+.chevron {
+  color: var(--ark-text-muted);
+  font-size: var(--ark-text-caption);
+  flex: none;
+  transition: color var(--ark-transition);
+}
+
+.tokenTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  flex: none;
+  padding: var(--ark-space-2) var(--ark-space-3);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-full);
+  background: transparent;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition),
+    box-shadow var(--ark-transition);
+}
+
+.tokenTrigger:hover {
+  border-color: var(--ark-primary);
+  background: var(--ark-primary-dim);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ark-primary) 7%, transparent);
+}
+
+/*
+ * Compact trigger variants.
+ *
+ * Both exist because the bridge card has two different jobs for a selector.
+ * The full-width `trigger` is a field: it is the thing on that line. These two
+ * are furniture around an amount — the number is the subject, and a selector
+ * that matched it for weight would fight it.
+ */
+
+/* The chain chip, sitting in a panel header beside "You pay". */
+.chipTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  padding: 5px var(--ark-space-3) 5px 5px;
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-full);
+  background: transparent;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.chipTrigger:hover {
+  border-color: color-mix(in srgb, var(--ark-primary) 42%, transparent);
+  background: var(--ark-primary-dim);
+}
+
+/* The chip's mark is smaller than the row's, so the chip stays the height of
+   the label it sits next to rather than setting the header's height itself. */
+.chipTrigger :global(.ark-mark) {
+  width: 20px;
+  height: 20px;
+  font-size: var(--ark-text-caption);
+}
+
+.chipTrigger .optionText {
+  display: inline;
+}
+
+/* The asset trigger at the head of an amount row. Bigger than the chip: this
+   one names what is being counted, so it is allowed weight. */
+.tokenLead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-2) var(--ark-space-3) var(--ark-space-2) var(--ark-space-2);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-full);
+  background: var(--ark-surface-elevated);
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.tokenLead:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--ark-primary) 48%, transparent);
+  background: color-mix(in srgb, var(--ark-primary) 8%, var(--ark-surface-elevated));
+}
+
+/*
+ * Disabled is not dimmed here.
+ *
+ * On the receive side the asset cannot change — a bridge does not swap — but
+ * the token is not *unavailable*, it is simply fixed. Fading it would say
+ * "this is broken or not ready" about the single most important fact on the
+ * row: which asset arrives. It keeps full contrast and only loses the chevron
+ * and the pointer.
+ */
+.tokenLead:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+/* Panel additions ------------------------------------------------------- */
+
+/* Separates the network grid from the asset list. Inset from the panel edge so
+   it reads as dividing two sections of one panel rather than cutting the panel
+   in half. */
+.panelRule {
+  margin: 0 var(--ark-space-5) var(--ark-space-3);
+  border: none;
+  border-top: 1px solid var(--ark-border);
+}
+
+/* The contract address on the row. Muted and monospaced: it is there to be
+   compared against something the reader already has, not read as prose. */
+.optionAddress {
+  color: var(--ark-text-muted);
+}
+
+.optionLink {
+  color: var(--ark-text-muted);
+  font-size: 0.85em;
+}

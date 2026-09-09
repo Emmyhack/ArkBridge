@@ -1,0 +1,11 @@
+{
+  "name": "@arkbridge/bridge-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manual transfer tooling built on @arkbridge/sdk.",
+  "type": "module",
+  "dependencies": {
+    "@arkbridge/sdk": "workspace:*",
+    "viem": "^2.40.0"
+  }
+}

@@ -1,0 +1,88 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ark-space-3);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--ark-space-12) var(--ark-space-6);
+  text-align: center;
+  background: var(--ark-surface);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+}
+
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+}
+
+.body {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: var(--ark-space-3);
+  margin-top: var(--ark-space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.retry {
+  padding: var(--ark-space-3) var(--ark-space-5);
+  border: none;
+  border-radius: var(--ark-radius-md);
+  background: var(--ark-metal);
+  color: var(--ark-primary-contrast);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--ark-transition),
+    box-shadow var(--ark-transition),
+    transform var(--ark-transition);
+}
+
+.secondary {
+  padding: var(--ark-space-3) var(--ark-space-5);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-md);
+  font-size: var(--ark-text-body-sm);
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition),
+    color var(--ark-transition);
+}
+
+@media (hover: hover) {
+  .retry:hover {
+    background: var(--ark-metal-hover);
+    box-shadow: var(--ark-shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  .secondary:hover {
+    border-color: color-mix(in srgb, var(--ark-secondary) 48%, transparent);
+    background: var(--ark-secondary-dim);
+    color: var(--ark-secondary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retry:hover {
+    transform: none;
+  }
+}
+
+.digest {
+  margin: 0;
+  color: var(--ark-text-muted);
+  font-size: var(--ark-text-label);
+}

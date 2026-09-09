@@ -1,0 +1,14 @@
+arkdevnet:
+  decimals: 6
+  interchainSecurityModule: "0x29A4B63f86a8F6118523eEF33BA4A9bBD39c49f6"
+  mailbox: "0xe441256be7296Fc42d2597A54dcD42E2C70cCb68"
+  name: Mock USD Coin
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  symbol: MockUSDC
+  type: synthetic
+sepolia:
+  interchainSecurityModule: "0xfA35acC54E20d883f0c0eA4dB4B31F7cd01aEbBd"
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+  token: "0x456e19EcB9919b9D6cBcFcC91ee25f95b1fC1742"
+  type: collateral

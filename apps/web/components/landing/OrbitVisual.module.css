@@ -1,0 +1,84 @@
+.visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Square, capped, and it shrinks with the column rather than forcing the
+     panel to a minimum width. */
+  width: min(100%, 380px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+/* The pool of light. Radial, heavily feathered, and the only place on the page
+   where the accent colour appears as a large area rather than a line or a
+   button — which is why it is held at 18%. */
+.glow {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--ark-primary) 18%, transparent) 0%,
+    transparent 68%
+  );
+  animation: ark-breathe 9s var(--ark-ease) infinite;
+}
+
+.ring {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--ark-primary) 22%, transparent);
+}
+
+/*
+ * The orbit track carries the satellite. Rotating the *track* and
+ * counter-rotating nothing is enough here because the satellite is a circle —
+ * the counter-rotation in the `ark-orbit` keyframes exists for glyphs that
+ * would otherwise tumble, and a dot has no orientation to preserve.
+ */
+.orbit {
+  position: absolute;
+  inset: 6%;
+  animation: ark-spin var(--ark-duration-ambient) linear infinite;
+}
+
+.satellite {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--ark-primary);
+  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--ark-primary) 55%, transparent);
+}
+
+.glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38%;
+  aspect-ratio: 1;
+  color: var(--ark-primary);
+}
+
+.glyph svg {
+  width: 100%;
+  height: 100%;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--ark-text-muted);
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow,
+  .orbit {
+    animation: none;
+  }
+}

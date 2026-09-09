@@ -1,0 +1,39 @@
+{
+  "name": "arkbridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ArkBridge — the canonical asset bridge for Ark Constellation.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=20.11.0",
+    "pnpm": ">=10.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "dev": "turbo run dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . && turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "validate:config": "pnpm --filter @arkbridge/config run validate",
+    "contracts:build": "pnpm --filter @arkbridge/contracts run build",
+    "contracts:test": "pnpm --filter @arkbridge/contracts run test",
+    "lint:fix": "eslint . --fix",
+    "check:chains": "pnpm --filter @arkbridge/config run check-chains"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@hyperlane-xyz/cli": "44.0.2",
+    "@types/node": "^22.20.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
+  }
+}

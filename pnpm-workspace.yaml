@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "scripts/*"
+
+# Infrastructure components (Hyperlane agents, validators, relayer, docker,
+# monitoring) are not Node packages and are intentionally excluded.

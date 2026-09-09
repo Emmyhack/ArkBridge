@@ -1,0 +1,67 @@
+.button {
+  position: fixed;
+  right: var(--ark-space-6);
+  bottom: var(--ark-space-6);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: var(--ark-radius-md);
+  border: 1px solid var(--ark-border-strong);
+  background: var(--ark-surface-glass);
+  backdrop-filter: blur(16px);
+  color: var(--ark-primary);
+  box-shadow: var(--ark-shadow-float);
+  transition:
+    gap var(--ark-duration-base) var(--ark-ease-out),
+    border-color var(--ark-transition),
+    transform var(--ark-duration-base) var(--ark-ease-out);
+}
+
+/*
+ * The label is collapsed to zero width at rest and expands on hover or focus.
+ * A width transition on `max-width` (not `width: auto`, which does not
+ * animate) keeps the resting footprint to a square icon, so the button does not
+ * sit permanently over the bottom-right of the content.
+ */
+.label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--ark-text-body-sm);
+  font-weight: 600;
+  color: var(--ark-text-primary);
+  transition: max-width var(--ark-duration-slow) var(--ark-ease-out);
+}
+
+.button:hover,
+.button:focus-visible {
+  gap: var(--ark-space-2);
+  border-color: color-mix(in srgb, var(--ark-primary) 45%, transparent);
+  transform: translateY(-2px);
+}
+
+.button:hover .label,
+.button:focus-visible .label {
+  max-width: 120px;
+}
+
+/* On a phone the button competes with the bridge card's own primary action,
+   which is the one thing that must never be obscured. */
+@media (max-width: 720px) {
+  .button {
+    right: var(--ark-space-4);
+    bottom: var(--ark-space-4);
+    height: 42px;
+    padding: 0 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .label {
+    transition: none;
+  }
+}

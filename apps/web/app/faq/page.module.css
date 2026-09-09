@@ -1,0 +1,43 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-5);
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+  padding-bottom: var(--ark-space-5);
+  border-bottom: 1px solid var(--ark-border);
+}
+
+.question {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+}
+
+.answer {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+  line-height: 1.6;
+}

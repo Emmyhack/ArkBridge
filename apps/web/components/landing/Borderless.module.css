@@ -1,0 +1,145 @@
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ark-space-16);
+  padding: var(--ark-space-24) 0;
+}
+
+.copy {
+  max-width: 56ch;
+}
+
+.prose {
+  margin: var(--ark-space-6) 0 0;
+  font-size: var(--ark-text-body);
+  line-height: 1.7;
+  color: var(--ark-text-secondary);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Two explicit rows — one for the terms, one for the glosses — so every
+     gloss sits on the same line even when a term above it wraps to two.
+     Without this, "Multisig quorum" pushes its own gloss a line lower than
+     the other three and the row stops reading as a row. */
+  grid-template-rows: auto auto;
+  gap: 4px var(--ark-space-5);
+  margin: var(--ark-space-12) 0 0;
+}
+
+.fact {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  align-content: start;
+}
+
+/*
+ * Accent-coloured, uppercase, tight. This is the second sanctioned use of the
+ * accent on text (the first being the inline lead-in): a term of art acting as
+ * a label. It works because these are never links — nothing here can be
+ * mistaken for something to press.
+ */
+.term {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ark-primary);
+}
+
+.gloss {
+  margin: 0;
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+.figure {
+  display: grid;
+  place-items: center;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  gap: var(--ark-space-5);
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  border: 1px solid var(--ark-border);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--ark-secondary) 13%, transparent),
+    transparent 68%
+  );
+  color: var(--ark-primary);
+}
+
+.logoMark {
+  width: min(56%, 220px);
+  height: auto;
+  filter: drop-shadow(0 0 28px color-mix(in srgb, var(--ark-primary) 20%, transparent));
+}
+
+.logoMark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ark-logo-sign var(--ark-duration-reveal) var(--ark-ease-out) forwards;
+}
+
+.logoMark path:nth-child(2) {
+  animation-delay: var(--ark-duration-base);
+}
+
+@keyframes ark-logo-sign {
+  from {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.logoType {
+  margin-top: calc(var(--ark-space-10) * -1);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ark-secondary);
+}
+
+@media (max-width: 960px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ark-space-12);
+    padding: var(--ark-space-16) 0;
+  }
+
+  /* The globe leads on a narrow screen: it is the thing that explains the
+     shape of the system faster than the paragraph does. */
+  .figure {
+    order: -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ark-space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logoMark path {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

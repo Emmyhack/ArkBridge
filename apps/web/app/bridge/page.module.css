@@ -1,0 +1,40 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  /*
+   * Full width. The bridge is the one page whose workspace wants the whole
+   * viewport — the chart column has nowhere else to go — so it states no
+   * measure at all and each section below caps itself.
+   */
+  max-width: none;
+  gap: var(--ark-space-6);
+  /* Keep the application compact, but do not pull its heading into the sticky
+     navigation. The layout's top padding provides the visual boundary. */
+  margin-top: 0;
+}
+
+.intro {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ark-text-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body);
+}
+
+@media (max-width: 720px) {
+  .title {
+    font-size: var(--ark-text-heading);
+  }
+}

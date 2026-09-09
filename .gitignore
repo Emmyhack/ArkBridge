@@ -1,0 +1,45 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# foundry
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/
+# packages/contracts/lib is tracked via git submodules (see .gitmodules)
+packages/contracts/.gas-snapshot.tmp
+
+# environment — never commit secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+keystore/
+
+# hyperlane agent runtime state
+infrastructure/**/db/
+infrastructure/**/checkpoints/
+infrastructure/**/validator_db/
+infrastructure/**/relayer_db/
+
+# logs / os / editor
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# test output
+coverage/
+lcov.info

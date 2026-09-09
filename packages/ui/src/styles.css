@@ -1,0 +1,275 @@
+/*
+ * Shared component styles.
+ *
+ * Every value comes from the ArkBridge token set (§53); this package defines no
+ * colours of its own so that a consuming app's theme applies unchanged.
+ */
+
+/*
+ * The picker is pinned to its anchor, not centred.
+ *
+ * `left`, `top` and `width` come from the Dialog component, which measures the
+ * nearest `[data-picker-anchor]` on open. `margin: 0` is essential: a modal
+ * `<dialog>` is centred by the UA with `margin: auto`, which would fight the
+ * measured coordinates and win.
+ *
+ * The fallback below the custom properties covers the case where no anchor is
+ * found — a picker used outside the bridge card still opens, centred, rather
+ * than collapsing into the corner.
+ */
+.ark-dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  width: min(440px, calc(100vw - 32px));
+  margin: auto;
+}
+
+.ark-dialog[data-anchored="true"] {
+  position: fixed;
+  margin: 0;
+  /* Never past the bottom of the viewport; the list inside scrolls instead. */
+  max-height: calc(100vh - 32px);
+}
+
+.ark-dialog[open]::backdrop {
+  background: rgb(0 0 0 / 55%);
+  backdrop-filter: blur(3px);
+  animation: ark-backdrop-in var(--ark-duration-base) var(--ark-ease) both;
+}
+
+/* The panel comes forward rather than popping into existence. */
+.ark-dialog[open] .ark-dialog__panel {
+  animation: ark-dialog-in var(--ark-duration-base) var(--ark-ease-out) both;
+}
+
+/* Leaving accelerates away: a departing panel should not linger. */
+.ark-dialog[data-closing="true"] .ark-dialog__panel {
+  animation: ark-dialog-in var(--ark-duration-fast) var(--ark-ease-in) reverse both;
+}
+
+.ark-dialog[data-closing="true"]::backdrop {
+  animation: ark-backdrop-in var(--ark-duration-fast) var(--ark-ease-in) reverse both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ark-dialog[open]::backdrop,
+  .ark-dialog[open] .ark-dialog__panel,
+  .ark-dialog[data-closing="true"] .ark-dialog__panel,
+  .ark-dialog[data-closing="true"]::backdrop {
+    animation: none;
+  }
+}
+
+.ark-dialog__panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--ark-surface);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-xl);
+  box-shadow: var(--ark-shadow-float);
+  color: var(--ark-text-primary);
+  overflow: hidden;
+  /* Never taller than the viewport, so the list scrolls rather than the page. */
+  max-height: calc(100vh - 32px);
+}
+
+.ark-dialog[data-anchored="true"] .ark-dialog__panel {
+  /* Room to grow past the form it replaced — the reference panel is taller than
+     the card, because a list of assets needs the height and the form does
+     not. */
+  max-height: min(760px, calc(100vh - 32px));
+}
+
+/* No bottom rule: the reference header sits directly above the search field,
+   and a divider there cuts the panel into two things instead of one. */
+.ark-dialog__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  padding: var(--ark-space-5) var(--ark-space-5) var(--ark-space-2);
+}
+
+.ark-dialog__title {
+  margin: 0;
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.ark-dialog__back {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  padding: 0;
+  border: none;
+  border-radius: var(--ark-radius-sm);
+  background: transparent;
+  color: var(--ark-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.ark-dialog__back:hover {
+  color: var(--ark-text-primary);
+  background: rgb(255 255 255 / 6%);
+}
+
+.ark-search {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/*
+ * The search field carries its magnifier as a background image rather than a
+ * sibling element. The icon is decorative and non-interactive, so making it a
+ * real node would add something focusable-adjacent to the DOM for no benefit,
+ * and absolutely positioning one over an input means keeping their padding in
+ * sync forever. `currentColor` is not available to a background SVG, so the
+ * stroke is the muted token's value written out.
+ */
+.ark-search__input {
+  margin: var(--ark-space-2) var(--ark-space-5) var(--ark-space-3);
+  padding: var(--ark-space-3) 40px var(--ark-space-3) var(--ark-space-4);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-md);
+  background-color: var(--ark-background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2379859a' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='9' cy='9' r='5.5'/%3E%3Cpath d='m13.2 13.2 3.3 3.3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--ark-space-4) center;
+  background-size: 18px 18px;
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body);
+}
+
+.ark-search__input:focus {
+  outline: none;
+  border-color: var(--ark-border-strong);
+}
+
+.ark-search__input::placeholder {
+  color: var(--ark-text-muted);
+}
+
+.ark-search__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--ark-space-3) var(--ark-space-4);
+  overflow-y: auto;
+  min-height: 0;
+  /* A visible track tells the reader there is more below, which a list of
+     assets usually has. */
+  scrollbar-width: thin;
+}
+
+.ark-search__option {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  width: 100%;
+  padding: var(--ark-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--ark-radius-md);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--ark-transition);
+}
+
+.ark-search__option[data-active="true"] {
+  background: var(--ark-surface-elevated);
+  border-color: var(--ark-border-strong);
+}
+
+@media (hover: hover) {
+  .ark-search__option:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--ark-primary) 30%, transparent);
+    background: var(--ark-primary-dim);
+  }
+}
+
+.ark-search__option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ark-search__empty {
+  margin: 0;
+  padding: var(--ark-space-6) var(--ark-space-5) var(--ark-space-8);
+  color: var(--ark-text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.ark-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border: 1px solid;
+  border-radius: var(--ark-radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ark-mark[data-logo] {
+  overflow: hidden;
+  border-color: transparent;
+  background: transparent;
+  color: var(--ark-primary);
+}
+
+.ark-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ark-skeleton {
+  display: inline-block;
+  border-radius: var(--ark-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--ark-surface-elevated) 25%,
+    var(--ark-border) 50%,
+    var(--ark-surface-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: ark-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes ark-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Motion is a nicety; a user who has asked for less must not get a pulsing
+   page (§59, §118). */
+@media (prefers-reduced-motion: reduce) {
+  .ark-skeleton {
+    animation: none;
+  }
+}
+
+/* Options respond immediately to hover — the one place instant feels right,
+   because the pointer is already there. */
+.ark-search__option {
+  transition:
+    background var(--ark-duration-instant) var(--ark-ease),
+    border-color var(--ark-duration-instant) var(--ark-ease);
+}

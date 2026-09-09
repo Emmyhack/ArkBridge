@@ -1,0 +1,65 @@
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--ark-space-5) var(--ark-space-4);
+  display: grid;
+  /* Three columns at the panel's width, collapsing to two when the panel is
+     narrower than the phone breakpoint rather than at a fixed viewport size —
+     the panel takes the form's width, which is not the viewport's. */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--ark-space-2);
+}
+
+.chip {
+  --chip-tint: var(--ark-primary);
+
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-2);
+  width: 100%;
+  padding: var(--ark-space-2) var(--ark-space-3);
+  border: 1px solid color-mix(in srgb, var(--chip-tint) 22%, transparent);
+  border-radius: var(--ark-radius-md);
+  /* Low alpha: the tint identifies the chip, it does not colour it in. Above
+     about 10% the grid becomes a set of coloured blocks competing with each
+     other and the marks stop being the thing you look at. */
+  background: color-mix(in srgb, var(--chip-tint) 7%, transparent);
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--ark-transition),
+    background-color var(--ark-transition);
+}
+
+.chip:hover {
+  border-color: color-mix(in srgb, var(--chip-tint) 45%, transparent);
+  background: color-mix(in srgb, var(--chip-tint) 14%, transparent);
+}
+
+/*
+ * Selection is a full-strength border, not a colour swap.
+ *
+ * Every chip is already tinted, so making the selected one "coloured" would say
+ * nothing. A crisp border against soft ones is legible even where the tints are
+ * close, and it survives without colour perception (§50) because the border
+ * weight and the `aria-pressed` state both carry it.
+ */
+.chip[aria-pressed="true"] {
+  border-color: var(--chip-tint);
+  background: color-mix(in srgb, var(--chip-tint) 16%, transparent);
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip :global(.ark-mark) {
+  width: 22px;
+  height: 22px;
+  font-size: 9px;
+}

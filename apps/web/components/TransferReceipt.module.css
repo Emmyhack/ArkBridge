@@ -1,0 +1,143 @@
+.receipt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-4);
+  padding: var(--ark-space-6);
+  background: var(--ark-surface);
+  border: 1px solid var(--ark-border);
+  border-radius: var(--ark-radius-lg);
+  box-shadow: var(--ark-shadow-card);
+}
+
+.title {
+  font-family: var(--ark-font-display);
+  margin: 0;
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+}
+
+.detail {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: var(--ark-space-4) 0;
+  border-top: 1px solid var(--ark-border);
+  border-bottom: 1px solid var(--ark-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-3);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--ark-space-3);
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+.step[data-state="done"] {
+  color: var(--ark-text-primary);
+}
+
+.step[data-state="active"] {
+  color: var(--ark-primary);
+}
+
+.marker {
+  width: 14px;
+  flex: none;
+  text-align: center;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-2);
+  margin: 0;
+  font-size: var(--ark-text-body-sm);
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ark-space-4);
+}
+
+.metaRow dt {
+  color: var(--ark-text-muted);
+}
+
+.metaRow dd {
+  margin: 0;
+}
+
+.link {
+  color: var(--ark-primary);
+  text-decoration: underline;
+}
+
+.again {
+  padding: var(--ark-space-3);
+  border: 1px solid var(--ark-border-strong);
+  border-radius: var(--ark-radius-md);
+  background: var(--ark-surface-elevated);
+  font-size: var(--ark-text-body-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.again:hover {
+  border-color: var(--ark-primary);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ark-space-1);
+}
+
+.amount {
+  margin: 0;
+  color: var(--ark-text-secondary);
+  font-size: var(--ark-text-body-sm);
+}
+
+/* A delay is informational, not an error: warning tone, never the error tone. */
+.delay {
+  margin: 0;
+  padding: var(--ark-space-3);
+  border: 1px solid var(--ark-warning);
+  border-radius: var(--ark-radius-md);
+  background: color-mix(in srgb, var(--ark-warning) 12%, transparent);
+  color: var(--ark-text-primary);
+  font-size: var(--ark-text-body-sm);
+}
+
+/* The active step pulses slowly — "still working", without a spinner's
+   urgency. Completed steps are static: nothing competes for attention with
+   the step that is actually happening. */
+.step[data-state="active"] .marker {
+  animation: ark-pulse 1.8s var(--ark-ease) infinite;
+}
+
+.step {
+  transition: color var(--ark-duration-base) var(--ark-ease);
+}
+
+/* Completion is confirmed once, then settles. */
+.title {
+  animation: ark-confirm var(--ark-duration-slow) var(--ark-ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step[data-state="active"] .marker,
+  .title {
+    animation: none;
+  }
+}

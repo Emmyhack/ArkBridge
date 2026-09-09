@@ -1,0 +1,115 @@
+{
+  "environment": "testnet",
+  "chain": "base-sepolia",
+  "chainId": 84532,
+  "hyperlaneDomainId": 84532,
+  "contracts": {
+    "mailbox": "0x6966b0E55883d49BFB24539356a2f8A673E02039",
+    "merkleTreeHook": "0x86fb9F1c124fB20ff130C41a79a432F770f67AFD",
+    "validatorAnnounce": "0x20c44b1E3BeaDA1e9826CFd48BeEDABeE9871cE9",
+    "staticMessageIdMultisigIsmFactory": "0xfc6e546510dC9d76057F1f76633FCFfC188CB213",
+    "arkOutboundMultisigIsm": "0xA65a9914f8C54D5119fCf240C5aBeb53613d4A64",
+    "mockUsdc": "0xbA73Ae96205Fa5bee35A659e148Cb1f4cA6Fa913",
+    "mockUsdcCollateralRouter": "0x6DDF30F6bcaa7F5B24CB61Ee13fC1258FD7541C6",
+    "rateLimiter": "0xb4001865642183364aa5fa5d89aa4050875dc170",
+    "pauseController": "0x750bf0b641f10c3864da1037eacc099270273f59",
+    "guard": "0x0c689b4173bf38882bce7bb427b6b355986ce2b6",
+    "guardHook": "0x50a6721Fab9F1d56D0dD7d23B02650a8A2ABe908",
+    "guardIsm": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88"
+  },
+  "tokens": {
+    "base-sepolia-mockusdc": {
+      "token": "0xbA73Ae96205Fa5bee35A659e148Cb1f4cA6Fa913",
+      "router": "0x6DDF30F6bcaa7F5B24CB61Ee13fC1258FD7541C6"
+    }
+  },
+  "contractDetails": {
+    "arkOutboundMultisigIsm": {
+      "address": "0xA65a9914f8C54D5119fCf240C5aBeb53613d4A64",
+      "deploymentTx": "0xb437442342e2d06e48f733af8709034da4adea4cb90819dc510702df635d8dce",
+      "block": 46392300,
+      "gasUsed": 115634
+    },
+    "mockUsdc": {
+      "address": "0xbA73Ae96205Fa5bee35A659e148Cb1f4cA6Fa913",
+      "deploymentTx": "0x44183959db2cca6f810fefc054e29453251a2c73fa047af2c966303f0b5e8eb3",
+      "block": 46392400
+    },
+    "mockUsdcCollateralRouter": {
+      "address": "0x6DDF30F6bcaa7F5B24CB61Ee13fC1258FD7541C6",
+      "block": 46392500
+    },
+    "rateLimiter": {
+      "address": "0xb4001865642183364aa5fa5d89aa4050875dc170",
+      "deploymentTx": "0xd50325d31e2c710c2b22076178ca34fca7b09c4446d5a954a4def6a58a34b72a",
+      "block": 46394561
+    },
+    "pauseController": {
+      "address": "0x750bf0b641f10c3864da1037eacc099270273f59",
+      "deploymentTx": "0x2a166e3e11a21f386686e917df0010946170caf8dbf88f9574be2cc55887d5d9",
+      "block": 46394562
+    },
+    "guard": {
+      "address": "0x0c689b4173bf38882bce7bb427b6b355986ce2b6",
+      "deploymentTx": "0x69f64489dd6be7c0ca08979e9bf7af53687dad9b331ff4fc4e25b89a0a8f0c17",
+      "block": 46394564
+    },
+    "guardHook": {
+      "address": "0x50a6721Fab9F1d56D0dD7d23B02650a8A2ABe908",
+      "block": 46400000,
+      "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "guardIsm": {
+      "address": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88",
+      "deploymentTx": "0x120672e466f334aee1c661032b6358f3d28664d7fe69af174fdcf404e1215025",
+      "block": 46394566
+    }
+  },
+  "hyperlane": {
+    "packageVersion": "12.1.0",
+    "messageVersion": 3,
+    "cliVersion": "44.0.2"
+  },
+  "deployer": "0xF031363A7FDdaFDcea062adc7421353A95F16420",
+  "block": 46392500,
+  "timestamp": 0,
+  "notes": {
+    "whyBase": "Added as a second external chain in place of BNB Smart Chain, whose testnet faucet could not be accessed. This is a scope change: the V1 spec lists Ethereum and BNB, with Base as post-V1. BSC is not removed \u2014 it stays defined and gated.",
+    "funding": "Base Sepolia has no accessible faucet either, but it is an OP-stack L2: 0.005 ETH was bridged from Sepolia through the canonical L1StandardBridge (0xfd0Bf71F60660E2f608ed56e1659C450eB113120, verified via otherBridge() == the 0x42...0010 L2 predeploy). Deposit took roughly 8 minutes to appear on L2.",
+    "gas": "Base Sepolia gas is ~0.006 gwei against Sepolia's ~1.1. The identical warp route deployment cost 0.0000389 ETH here versus 0.0068 ETH on Sepolia \u2014 about 175x less.",
+    "distinctAsset": "base-sepolia-mockusdc is a DIFFERENT asset from sepolia-mockusdc. Same ticker, different canonical issuance, different collateral pool, different synthetic on Ark (MockUSDCb). They are never merged.",
+    "provenance": "mailbox, merkleTreeHook, validatorAnnounce and staticMessageIdMultisigIsmFactory are Hyperlane's canonical Base Sepolia deployment. `deployer` refers only to the arkOutbound* / mockUsdc* entries."
+  },
+  "roundTrip": {
+    "status": "VERIFIED both directions",
+    "lockAndMint": {
+      "amount": "500000000",
+      "baseTx": "0xc5c1dba1a0e7c8be4a3b6f96440a2f306a19a6e0016ab8b9906422d0e1730d40",
+      "baseBlock": 46392657,
+      "baseCollateralAfter": "500000000",
+      "arkSyntheticAfter": "500000000"
+    },
+    "burnAndRelease": {
+      "amount": "200000000",
+      "arkTx": "0x9fb24895346375b9b56dc6c2b5d4480822995ab1b25767a01ad7bf621e616e5a",
+      "baseCollateralAfter": "300000000",
+      "arkSyntheticAfter": "300000000"
+    },
+    "solvency": "collateral 300000000 == synthetic 300000000 at rest",
+    "outboundNeededNoNewValidators": "Ark -> Base was secured by the SAME three validators already watching Ark. Adding an external chain costs a new ISM on that chain, not a new validator set \u2014 only the inbound direction needs a set per origin.",
+    "issuesHit": [
+      "Base Sepolia's Mailbox rejects non-zero msg.value ('MerkleTreeHook: no value expected'). quoteGasPayment returns 0 here where Sepolia returns 1 wei, so hardcoding a fee across chains would have failed. Always quote per chain.",
+      "sepolia.base.org rate-limits an indexing agent hard enough to stall delivery entirely. Fixed by listing base-sepolia-rpc.publicnode.com first with sepolia.base.org as fallback."
+    ]
+  },
+  "guard": {
+    "status": "LIVE \u2014 collateral router gated on both directions",
+    "wiring": "The mockUsdcCollateralRouter now uses guardHook as its post-dispatch hook (outbound: locking collateral) and guardIsm as its ISM (inbound: releasing it). guardIsm wraps the existing multisig, so validator verification is unchanged.",
+    "limits": {
+      "perTransaction": "1000000000",
+      "hourly": "5000000000",
+      "daily": "20000000000"
+    },
+    "liveVerification": "A 100-unit transfer returns a message id; a 2,000-unit transfer reverts with ExceedsPerTransaction (0x9f6ddf1c)."
+  }
+}

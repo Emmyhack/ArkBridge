@@ -1,0 +1,100 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: var(--ark-space-16) var(--ark-space-5) var(--ark-space-10);
+}
+
+.panel {
+  max-width: var(--ark-measure);
+  margin: 0 auto;
+  padding: var(--ark-space-12) var(--ark-space-10);
+  border-radius: var(--ark-radius-2xl);
+  border: 1px solid var(--ark-border);
+  background: color-mix(in srgb, var(--ark-surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.columns {
+  display: grid;
+  /* auto-fit rather than a fixed six-column grid: the six columns collapse to
+     three then two on their own, with no breakpoint per step. */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--ark-space-8);
+}
+
+.columnTitle {
+  margin: 0 0 var(--ark-space-5);
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-subheading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  /* Peach, matching every other heading level — the footer is not a place to
+     start a second type system. */
+  color: var(--ark-display-ink);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--ark-space-3);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--ark-text-body);
+  color: var(--ark-text-secondary);
+  transition: color var(--ark-transition);
+}
+
+.link:hover {
+  color: var(--ark-text-primary);
+}
+
+.baseline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ark-space-4);
+  margin-top: var(--ark-space-12);
+  padding-top: var(--ark-space-6);
+  border-top: 1px solid var(--ark-border);
+  font-size: var(--ark-text-body-sm);
+  color: var(--ark-text-muted);
+}
+
+.brand {
+  font-family: var(--ark-font-display);
+  font-size: var(--ark-text-body);
+  font-weight: 600;
+  color: var(--ark-text-primary);
+}
+
+.environment {
+  padding: 3px var(--ark-space-3);
+  border-radius: var(--ark-radius-full);
+  border: 1px solid var(--ark-border);
+  text-transform: capitalize;
+}
+
+.environment[data-testnet="true"] {
+  border-color: color-mix(in srgb, var(--ark-warning) 40%, transparent);
+  color: var(--ark-warning);
+}
+
+.note {
+  margin-left: auto;
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: var(--ark-space-8) var(--ark-space-6);
+  }
+
+  .note {
+    margin-left: 0;
+  }
+}
