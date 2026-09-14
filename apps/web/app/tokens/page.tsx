@@ -3,6 +3,21 @@ import { catalogFor } from "../../lib/catalog";
 import { usableRoutes } from "@arkbridge/bridge-core";
 import styles from "./page.module.css";
 
+/**
+ * Re-read the deployment artifacts at most once a minute.
+ *
+ * Without this the page is prerendered once at build time and the contract
+ * addresses are frozen into the HTML, which means redeploying a contract would
+ * require rebuilding and redeploying the frontend — the coupling §120 and §154
+ * exist to prevent. The artifacts are read on the server, so the alternative
+ * (`force-dynamic`) would put a filesystem read on every request for data that
+ * changes only when someone runs a deploy script.
+ *
+ * Sixty seconds is the compromise: a redeploy is picked up without a build, and
+ * the common case still serves a cached render.
+ */
+export const revalidate = 60;
+
 export const metadata = {
   title: "Supported assets",
   description: "Verify ArkBridge assets, origins, contracts, and available routes.",

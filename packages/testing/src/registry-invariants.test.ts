@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { findRepoRoot } from "@arkbridge/config/node";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ENVIRONMENTS } from "@arkbridge/types";
@@ -239,4 +242,73 @@ describe("production registry", () => {
       assert.equal(route.enabled, false, `${route.id} is enabled on mainnet by default`);
     }
   });
+});
+
+describe("agent RPC redundancy", () => {
+  /*
+   * Every chain the agents index needs more than one RPC endpoint.
+   *
+   * This is not a preference. Sepolia ran with a single endpoint while Base ran
+   * with two, and the difference was not cosmetic: the single endpoint
+   * rate-limited `eth_getLogs`, Hyperlane's sequence-aware cursor received
+   * partial results, decided the returned sequences did not match the range it
+   * asked for, and rewound to its last good snapshot — 763 times in 25 minutes,
+   * never advancing.
+   *
+   * The cost was not a slow bridge. The validators fell 211 checkpoints behind,
+   * and when they recovered they jumped straight to the tip, leaving indices
+   * 872428-872638 permanently unsigned. Every message dispatched from Sepolia in
+   * that window became undeliverable — collateral locked, no quorum reachable,
+   * and no error surfaced anywhere until someone read the relayer logs.
+   * Recovering it meant wiping all three validator databases and re-indexing
+   * seven million blocks.
+   *
+   * One endpoint is a single point of failure for an entire route. This makes
+   * adding a chain without redundancy fail in CI, rather than in production
+   * months later as a transfer that never arrives.
+   */
+  const agentConfig = JSON.parse(
+    readFileSync(join(findRepoRoot(), "infrastructure/hyperlane/agents/agent-config.json"), "utf8"),
+  ) as { readonly chains: Record<string, { readonly rpcUrls?: readonly { http?: string }[] }> };
+
+  /*
+   * Chains that legitimately have one endpoint, and why.
+   *
+   * An exemption is a recorded decision, not an escape hatch: naming a chain
+   * here says someone accepted the stall risk for a stated reason. Ark Devnet is
+   * a single node with no public mirror, and its URL is supplied from the
+   * environment at run time rather than from this file, so the entry here is a
+   * placeholder the test cannot meaningfully count.
+   */
+  const SINGLE_ENDPOINT_BY_DESIGN: Record<string, string> = {
+    arkdevnet: "single devnet node, no mirror; URL injected from ARK_RPC_URL at run time",
+  };
+
+  for (const [chain, config] of Object.entries(agentConfig.chains)) {
+    const exemption = SINGLE_ENDPOINT_BY_DESIGN[chain];
+    const urls = (config.rpcUrls ?? []).map((entry) => entry.http).filter((u) => u !== undefined);
+
+    if (exemption !== undefined) {
+      it(`${chain} is a documented single-endpoint chain`, () => {
+        // Asserted so the exemption cannot outlive its reason: once a mirror
+        // exists and a second URL is added, this fails and the entry is removed.
+        assert.equal(
+          urls.length,
+          1,
+          `${chain} now has ${urls.length} endpoints. Remove it from ` +
+            "SINGLE_ENDPOINT_BY_DESIGN so it is held to the redundancy rule.",
+        );
+      });
+      continue;
+    }
+
+    it(`${chain} has a fallback RPC endpoint`, () => {
+      assert.ok(
+        urls.length >= 2,
+        `${chain} has ${urls.length} RPC endpoint(s). A single endpoint lets one ` +
+          "rate limit stall the indexing cursor and silently strand transfers " +
+          "with collateral already locked.",
+      );
+    });
+  }
 });

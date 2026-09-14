@@ -27,6 +27,11 @@ describe("CTA state machine ordering", () => {
       "connectedChainId !== sourceChain.chainId",
       "amountInput.trim()",
       "state.amount > state.balance",
+      // The delivery fee is paid in the source chain's gas token. Checked after
+      // the asset balance, because "you cannot afford the amount" is the more
+      // fundamental message when both are true, and before capacity so the
+      // user learns about their own wallet before the route's limits.
+      "state.nativeBalance < state.quote.interchainFee",
       "state.amount > state.capacity",
       'state.error?.code === "ROUTE_PAUSED"',
       "state.approvalRequired",
@@ -47,6 +52,18 @@ describe("CTA state machine ordering", () => {
         source.indexOf("state.approvalRequired"),
       "approval is offered before the network is correct",
     );
+  });
+
+  it("blocks on the gas-token balance before offering Bridge", () => {
+    // Once the IGP is the mailbox's required hook, quoteGasPayment is
+    // non-zero and paid in KASH/ETH. A user holding the asset but not the
+    // gas token would otherwise reach the wallet and revert there (§88).
+    assert.ok(
+      source.indexOf("state.nativeBalance < state.quote.interchainFee") <
+        source.lastIndexOf('label: "Bridge"'),
+      "Bridge is offered before the delivery fee is checked against the gas-token balance",
+    );
+    assert.ok(source.includes("for Delivery Fee"), "the block does not name the delivery fee");
   });
 
   it("checks capacity before enabling Bridge", () => {

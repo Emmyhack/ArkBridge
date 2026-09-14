@@ -1,3 +1,7 @@
+import { findRepoRoot } from "@arkbridge/config/node";
+import { existsSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Address } from "@arkbridge/types";
@@ -197,5 +201,65 @@ describe("environment resolution", () => {
   it("accepts each known environment", () => {
     assert.equal(resolveEnvironment("testnet"), "testnet");
     assert.equal(resolveEnvironment(" mainnet "), "mainnet");
+  });
+});
+
+describe("workspace root resolution", () => {
+  /*
+   * This is a deployment path, not a convenience.
+   *
+   * In a checkout the walk-up always succeeds, so nothing here is exercised by
+   * normal development — which is exactly why it needs a test. A production
+   * image has no `pnpm-workspace.yaml`, so the walk runs to `/` and throws, and
+   * because every page is cached the throw does not surface until the first
+   * revalidation. The container comes up healthy and starts failing minutes
+   * later, which is the hardest version of this bug to diagnose.
+   */
+  const KEY = "ARKBRIDGE_REPO_ROOT";
+  const original = process.env[KEY];
+
+  const restore = (): void => {
+    if (original === undefined) delete process.env[KEY];
+    else process.env[KEY] = original;
+  };
+
+  it("uses the configured root when one is set", () => {
+    process.env[KEY] = tmpdir();
+    try {
+      assert.equal(findRepoRoot(), resolve(tmpdir()));
+    } finally {
+      restore();
+    }
+  });
+
+  it("still walks up when nothing is configured", () => {
+    delete process.env[KEY];
+    try {
+      // The workspace this test runs in — the walk must keep working for
+      // scripts, tests and `next dev`.
+      assert.ok(existsSync(join(findRepoRoot(), "pnpm-workspace.yaml")));
+    } finally {
+      restore();
+    }
+  });
+
+  it("treats an empty value as unset rather than as the current directory", () => {
+    process.env[KEY] = "";
+    try {
+      assert.ok(existsSync(join(findRepoRoot(), "pnpm-workspace.yaml")));
+    } finally {
+      restore();
+    }
+  });
+
+  it("fails loudly when the configured root does not exist", () => {
+    process.env[KEY] = join(tmpdir(), "arkbridge-does-not-exist-ykxq");
+    try {
+      // Better to refuse at the point of misconfiguration than to fall back to
+      // a walk-up that would silently find a different tree.
+      assert.throws(() => findRepoRoot(), /does not exist/);
+    } finally {
+      restore();
+    }
   });
 });

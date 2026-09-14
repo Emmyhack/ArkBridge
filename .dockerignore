@@ -1,0 +1,17 @@
+# Keep build context small and secrets out of it. `.env` in particular must
+# never enter an image layer.
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+packages/contracts/out
+packages/contracts/cache
+packages/contracts/lib
+infrastructure/validators
+infrastructure/relayer
+*.log

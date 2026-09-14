@@ -10,14 +10,48 @@ import { parseDeploymentArtifact } from "./artifacts.js";
 import type { HydratedRegistries } from "./hydrate.js";
 import { hydrateRegistries } from "./hydrate.js";
 
-/** Walk up from this module to the workspace root (the pnpm-workspace.yaml). */
+/**
+ * Locate the workspace root.
+ *
+ * Normally this walks up from this module until it finds the
+ * `pnpm-workspace.yaml`, which is correct for anything running inside a checkout
+ * — scripts, tests, `next dev`.
+ *
+ * It is wrong for a deployed application. A production image contains the built
+ * app and the deployment artifacts, not the workspace: there is no
+ * `pnpm-workspace.yaml` to find, so the walk would run to `/` and throw. That
+ * throw would happen on the first request that needed a contract address, not
+ * at startup, so a container would come up healthy and then fail serving the
+ * bridge — the worst possible shape for this failure.
+ *
+ * `ARKBRIDGE_REPO_ROOT` names the directory explicitly for exactly that case.
+ * It is checked first and validated, so a typo in the deployment environment
+ * fails loudly at the point of misconfiguration rather than resolving to
+ * something that happens to exist.
+ */
 export function findRepoRoot(start: string = dirname(fileURLToPath(import.meta.url))): string {
+  const configured = process.env["ARKBRIDGE_REPO_ROOT"];
+  if (configured !== undefined && configured !== "") {
+    const root = resolve(configured);
+    if (!existsSync(root)) {
+      throw new Error(
+        `ARKBRIDGE_REPO_ROOT is set to "${configured}", which does not exist. ` +
+          "It must point at a directory containing a `deployments/` directory.",
+      );
+    }
+    return root;
+  }
+
   let current = resolve(start);
   for (;;) {
     if (existsSync(join(current, "pnpm-workspace.yaml"))) return current;
     const parent = dirname(current);
     if (parent === current) {
-      throw new Error(`Could not locate the workspace root above "${start}".`);
+      throw new Error(
+        `Could not locate the workspace root above "${start}". ` +
+          "If this is a deployed application rather than a checkout, set " +
+          "ARKBRIDGE_REPO_ROOT to the directory holding `deployments/`.",
+      );
     }
     current = parent;
   }

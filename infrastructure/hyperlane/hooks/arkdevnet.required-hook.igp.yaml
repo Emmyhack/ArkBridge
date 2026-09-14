@@ -1,0 +1,30 @@
+# Standalone hook config for `hyperlane hook deploy`.
+#
+# Deploys ONLY the new required hook; the mailbox is then pointed at it with a
+# single owner call (setRequiredHook). Chosen over `core apply` because that
+# command, in CLI v44, runs the deploy inside its chain-resolution step before
+# any signer exists and cannot complete when a config needs a new contract.
+#
+# The merkleTreeHook is deliberately NOT here. It remains the routers' hook via
+# the guard hook; this aggregation is the mailbox's *required* hook, which runs
+# on every dispatch in addition to whatever hook the caller supplies.
+type: aggregationHook
+hooks:
+  # The protocol fee hook that is ALREADY the required hook, by address. The
+  # schema accepts a bare address for an existing hook; deploying a second
+  # zero-fee protocolFee would only add an unowned duplicate to keep track of.
+  - "0x21D69525c16B537528815FD0A85acc0321515FF4"
+  - type: interchainGasPaymaster
+    owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+    beneficiary: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+    oracleKey: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+    overhead:
+      sepolia: 150000
+      basesepolia: 150000
+    oracleConfig:
+      sepolia:
+        gasPrice: "1190122238"
+        tokenExchangeRate: "10000000000"
+      basesepolia:
+        gasPrice: "6000000"
+        tokenExchangeRate: "10000000000"

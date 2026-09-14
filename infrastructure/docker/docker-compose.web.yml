@@ -1,0 +1,28 @@
+# ArkBridge web, production.
+#
+#   docker compose -f infrastructure/docker/docker-compose.web.yml up -d --build
+#
+# The build context is the repository root because the image builds from the
+# workspace: the app depends on eight local packages that have to be built
+# alongside it.
+services:
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/web/Dockerfile
+    image: arkbridge/web:latest
+    restart: unless-stopped
+    ports:
+      - "${ARKBRIDGE_WEB_PORT:-3000}:3000"
+    environment:
+      # Which registry the app serves. There is no default anywhere in the
+      # system — an unset value is an error rather than a guess at "testnet".
+      NEXT_PUBLIC_ARKBRIDGE_ENV: ${NEXT_PUBLIC_ARKBRIDGE_ENV:?set this, e.g. testnet}
+      ARKBRIDGE_ENV: ${ARKBRIDGE_ENV:?set this, e.g. testnet}
+      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-}
+      NEXT_PUBLIC_INDEXER_URL: ${NEXT_PUBLIC_INDEXER_URL:-}
+    # Deployment artifacts are baked into the image at /app/deployments. Mount
+    # over them to point a running container at a different deployment without
+    # rebuilding — the pages re-read them within a minute.
+    volumes:
+      - ../../deployments:/app/deployments:ro

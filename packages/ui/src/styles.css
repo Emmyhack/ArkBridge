@@ -209,16 +209,30 @@
   text-align: center;
 }
 
+/*
+ * A chain mark: a logo, or the chain's initials when there is no logo.
+ *
+ * The box size is a single custom property and the fallback glyph is derived
+ * from it. Call sites used to set `width`, `height` and `font-size` separately,
+ * which meant the glyph's proportion was restated — and re-guessed — at every
+ * size the mark appears in, and drifted between them. Setting one property now
+ * scales both.
+ *
+ * 0.36 is the ratio that keeps two uppercase initials inside the circle with
+ * visible breathing room at every size used here (20px to 28px).
+ */
 .ark-mark {
+  --ark-mark-size: 28px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--ark-mark-size);
+  height: var(--ark-mark-size);
   flex: none;
   border: 1px solid;
   border-radius: var(--ark-radius-full);
-  font-size: 10px;
+  font-size: calc(var(--ark-mark-size) * 0.36);
   font-weight: 700;
   letter-spacing: 0.02em;
 }

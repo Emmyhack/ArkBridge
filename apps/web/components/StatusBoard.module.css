@@ -130,7 +130,5 @@
 /* Status rows are dense; the mark rides at the row's type size rather than the
    selector's control size. */
 .rowName :global(.ark-mark) {
-  width: 22px;
-  height: 22px;
-  font-size: var(--ark-text-caption);
+  --ark-mark-size: 22px;
 }

@@ -31,7 +31,11 @@
     "guard": "0xbba9B50B24F101d4E76676BEffcFB0D3FbC08663",
     "guardHook": "0x3155E3658841a0B9Ea59F3Cb3A55040481ad1cF7",
     "guardIsm": "0xcA70701657a9791B0A922266876D7aF653575BDC",
-    "recoveryIsm": "0x734F019b2B9bD5BD331e455c8D4Fe7159625DCA6"
+    "recoveryIsm": "0x734F019b2B9bD5BD331e455c8D4Fe7159625DCA6",
+    "storageGasOracle": "0x7d0974704196ece0E6C5F164715bC7E2232A1c48",
+    "interchainGasPaymasterImpl": "0xf238B131a12B22AC3750EA45814c8807Dc26eb8d",
+    "interchainGasPaymaster": "0x3191a4f5aC2A0CCa781D72eF6Ff5fC495cF9C20a",
+    "requiredHookAggregation": "0x02dBCaE6125944B084700935408CEd4A0872980b"
   },
   "contractDetails": {
     "domainRoutingIsmFactory": {
@@ -195,6 +199,50 @@
       "address": "0x734F019b2B9bD5BD331e455c8D4Fe7159625DCA6",
       "block": 232000,
       "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "storageGasOracle": {
+      "address": "0x7d0974704196ece0E6C5F164715bC7E2232A1c48",
+      "deployedBy": "hyperlane hook deploy (CLI 44.0.2)",
+      "deployedAt": "2026-09-14",
+      "wired": false,
+      "note": "Gas oracle for the IGP. remoteGasData set for sepolia and basesepolia. NOT YET WIRED: mailbox.requiredHook is still protocolFee (0x21D6...5FF4). Wiring is a single owner call, mailbox.setRequiredHook(requiredHookAggregation), deliberately held for explicit approval because required-hook changes are the SEC-03 surface. Until wired, quotes stay 0 and the relayer keeps absorbing delivery gas.",
+      "deploymentTx": "0x3a6354eb54f9c6f3fb01d6ba44c1218bbbfcb86797646f36a0970e22e4c848c7",
+      "block": 467080,
+      "gasUsed": 709281,
+      "creation": "CREATE, deployer nonce 110"
+    },
+    "interchainGasPaymasterImpl": {
+      "address": "0xf238B131a12B22AC3750EA45814c8807Dc26eb8d",
+      "deployedBy": "hyperlane hook deploy (CLI 44.0.2)",
+      "deployedAt": "2026-09-14",
+      "wired": false,
+      "note": "IGP implementation behind the proxy below. NOT YET WIRED: mailbox.requiredHook is still protocolFee (0x21D6...5FF4). Wiring is a single owner call, mailbox.setRequiredHook(requiredHookAggregation), deliberately held for explicit approval because required-hook changes are the SEC-03 surface. Until wired, quotes stay 0 and the relayer keeps absorbing delivery gas.",
+      "deploymentTx": "0x50ddf4fdb9720fb7947f009f09726c1af1ca0c59926b14d01c8c696ad995a0f0",
+      "block": 467095,
+      "gasUsed": 3677745,
+      "creation": "CREATE, deployer nonce 113"
+    },
+    "interchainGasPaymaster": {
+      "address": "0x3191a4f5aC2A0CCa781D72eF6Ff5fC495cF9C20a",
+      "deployedBy": "hyperlane hook deploy (CLI 44.0.2)",
+      "deployedAt": "2026-09-14",
+      "wired": false,
+      "note": "IGP proxy (TransparentUpgradeableProxy, admin = proxyAdmin). Overhead 150000 to sepolia and basesepolia. NOT YET WIRED: mailbox.requiredHook is still protocolFee (0x21D6...5FF4). Wiring is a single owner call, mailbox.setRequiredHook(requiredHookAggregation), deliberately held for explicit approval because required-hook changes are the SEC-03 surface. Until wired, quotes stay 0 and the relayer keeps absorbing delivery gas.",
+      "deploymentTx": "0x929b4f936bc2c194980f276e3dcb84dc518f37b16fec068fddf4361b16825d8e",
+      "block": 467104,
+      "gasUsed": 808482,
+      "creation": "CREATE (TransparentUpgradeableProxy), deployer nonce 115"
+    },
+    "requiredHookAggregation": {
+      "address": "0x02dBCaE6125944B084700935408CEd4A0872980b",
+      "deployedBy": "hyperlane hook deploy (CLI 44.0.2)",
+      "deployedAt": "2026-09-14",
+      "wired": false,
+      "note": "StaticAggregationHook[protocolFee, interchainGasPaymaster]. Intended mailbox requiredHook. NOT YET WIRED: mailbox.requiredHook is still protocolFee (0x21D6...5FF4). Wiring is a single owner call, mailbox.setRequiredHook(requiredHookAggregation), deliberately held for explicit approval because required-hook changes are the SEC-03 surface. Until wired, quotes stay 0 and the relayer keeps absorbing delivery gas.",
+      "deploymentTx": "0xc5caa0fa9777586d276c5c511c913824db5a07a8f2c7085f74db0bec810fe5f4",
+      "block": 467118,
+      "gasUsed": 108359,
+      "creation": "CREATE2 via staticAggregationHookFactory, deployer nonce 118"
     }
   },
   "hyperlane": {

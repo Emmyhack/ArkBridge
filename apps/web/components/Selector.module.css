@@ -120,9 +120,7 @@
 /* The chip's mark is smaller than the row's, so the chip stays the height of
    the label it sits next to rather than setting the header's height itself. */
 .chipTrigger :global(.ark-mark) {
-  width: 20px;
-  height: 20px;
-  font-size: var(--ark-text-caption);
+  --ark-mark-size: 20px;
 }
 
 .chipTrigger .optionText {

@@ -34,6 +34,9 @@
       "rpcUrls": [
         {
           "http": "https://ethereum-sepolia-rpc.publicnode.com"
+        },
+        {
+          "http": "https://sepolia.gateway.tenderly.co"
         }
       ],
       "mailbox": "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766",

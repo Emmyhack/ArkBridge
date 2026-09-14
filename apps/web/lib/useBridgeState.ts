@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { createPublicClient, http } from "viem";
 import type { ArkBridge } from "@arkbridge/sdk";
 import type { RouteCatalog, RouteSelection } from "@arkbridge/bridge-core";
 import { normalizeError, parseAmount, resolveRoute } from "@arkbridge/bridge-core";
@@ -10,6 +11,9 @@ export interface BridgeState {
   readonly decimals: number;
   readonly amount: bigint;
   readonly balance?: bigint;
+  /** Source-chain gas token balance. The delivery fee is paid from this, not
+   *  from the bridged asset, so it is checked separately (§88). */
+  readonly nativeBalance?: bigint;
   readonly capacity?: bigint;
   readonly quote?: BridgeQuote;
   readonly approvalRequired: boolean;
@@ -66,6 +70,17 @@ export function useBridgeState(
     queryFn: async () => {
       if (account === undefined) return null;
       const route = resolveRoute(catalog, selection);
+      // The IGP charges the delivery fee in the source chain's gas token. A
+      // user can hold plenty of the bridged asset and still have a transfer
+      // revert at the wallet for want of gas-token to pay that fee — the exact
+      // failure §88 says must be caught before the wallet, not by it.
+      const rpc = catalog.chains[selection.sourceChain]?.rpcUrls[0];
+      const nativeBalance =
+        rpc === undefined
+          ? undefined
+          : await createPublicClient({ transport: http(rpc) })
+              .getBalance({ address: account })
+              .catch(() => undefined);
       const [balance, capacity, approval] = await Promise.all([
         bridge.getBalance(route, account),
         bridge.getCapacity(route),
@@ -78,7 +93,13 @@ export function useBridgeState(
           account,
         }),
       ]);
-      return { balance, capacity, allowance: approval.current, isSynthetic: !approval.required };
+      return {
+        balance,
+        capacity,
+        allowance: approval.current,
+        isSynthetic: !approval.required,
+        ...(nativeBalance === undefined ? {} : { nativeBalance }),
+      };
     },
   });
 
@@ -122,6 +143,7 @@ export function useBridgeState(
       void quoteState.refetch();
     },
     ...(data?.balance === undefined ? {} : { balance: data.balance }),
+    ...(data?.nativeBalance === undefined ? {} : { nativeBalance: data.nativeBalance }),
     ...(data?.capacity === undefined ? {} : { capacity: data.capacity }),
     ...(quoteState.data === undefined ? {} : { quote: quoteState.data }),
     approvalRequired,

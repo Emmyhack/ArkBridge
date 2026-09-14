@@ -1,0 +1,16 @@
+# Local registry entry, derived from agents/agent-config.json. Exists so the
+# Hyperlane CLI can resolve this chain by name for IGP oracle configuration
+# without cloning the public registry. Not a deployment target.
+name: sepolia
+displayName: Sepolia
+chainId: 11155111
+domainId: 11155111
+protocol: ethereum
+isTestnet: true
+nativeToken:
+  name: Ether
+  symbol: ETH
+  decimals: 18
+rpcUrls:
+  - http: https://ethereum-sepolia-rpc.publicnode.com
+  - http: https://sepolia.gateway.tenderly.co

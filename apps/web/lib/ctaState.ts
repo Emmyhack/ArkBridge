@@ -70,6 +70,23 @@ export function deriveCta(params: {
     return { kind: "blocked", label: "Insufficient Balance", disabled: true };
   }
 
+  // The delivery fee is paid in the source chain's gas token, not the asset.
+  // Ordered after the asset-balance check: "Insufficient Balance" is the more
+  // fundamental problem and must win when both are true.
+  if (
+    state.quote !== undefined &&
+    state.nativeBalance !== undefined &&
+    state.nativeBalance < state.quote.interchainFee
+  ) {
+    const native = sourceChain?.nativeCurrency.symbol ?? "gas token";
+    return {
+      kind: "blocked",
+      label: `Insufficient ${native} for Delivery Fee`,
+      disabled: true,
+      hint: `The delivery fee is paid in ${native} on ${sourceChain?.name ?? "the source network"}, separately from the amount you are sending.`,
+    };
+  }
+
   // Checked before submission, never after (§88): the user must not reach a
   // wallet confirmation for a transfer the route is going to reject.
   if (state.capacity !== undefined && state.amount > state.capacity) {

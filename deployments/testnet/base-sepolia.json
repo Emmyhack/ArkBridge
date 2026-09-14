@@ -15,7 +15,7 @@
     "pauseController": "0x750bf0b641f10c3864da1037eacc099270273f59",
     "guard": "0x0c689b4173bf38882bce7bb427b6b355986ce2b6",
     "guardHook": "0x50a6721Fab9F1d56D0dD7d23B02650a8A2ABe908",
-    "guardIsm": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88"
+    "guardIsm": "0xD60E8CC29AB1a2733d4b8882348Fa7a552B5b57E"
   },
   "tokens": {
     "base-sepolia-mockusdc": {
@@ -60,9 +60,11 @@
       "deploymentTx": "0x0000000000000000000000000000000000000000000000000000000000000000"
     },
     "guardIsm": {
-      "address": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88",
-      "deploymentTx": "0x120672e466f334aee1c661032b6358f3d28664d7fe69af174fdcf404e1215025",
-      "block": 46394566
+      "address": "0xD60E8CC29AB1a2733d4b8882348Fa7a552B5b57E",
+      "deploymentTx": "0xe3f2eeecac935558103f2a03ce497d3c99e237255159d1916c4b16575c47745d",
+      "block": 46618178,
+      "replaces": "0x72bed5a467da40f97e6c0e2e1f0f75533f484b88",
+      "reason": "The previous guardIsm predated the moduleType() delegation fix and returned NULL (6) instead of the inner ISM's type (5). A relayer reads moduleType() to decide what proof to build, so it built empty metadata and every Ark -> Base Sepolia delivery reverted in eth_estimateGas. Base -> Ark was unaffected and passed, which is why this went unnoticed. Constructor arguments are unchanged; only the bytecode differs."
     }
   },
   "hyperlane": {

@@ -58,11 +58,46 @@ defaultHook:
 # Charged on every dispatch. Set to zero on devnet: a non-zero protocol fee here
 # would make every test transfer cost KASH for no purpose.
 requiredHook:
-  type: protocolFee
-  owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
-  beneficiary: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
-  maxProtocolFee: "100000000000000000"
-  protocolFee: "0"
+  # WHY THE IGP LIVES HERE AND NOT IN defaultHook
+  #
+  # The bridge routers set their own hook (ArkBridgeGuardHook), and a caller
+  # supplied hook makes the mailbox skip defaultHook entirely. An IGP placed in
+  # defaultHook would be deployed, wired, quoted by nothing and paid by nobody —
+  # correct-looking configuration that is not in the dispatch path. The required
+  # hook runs on every dispatch regardless of the caller's hook, so this is the
+  # one place a gas payment can be made mandatory without redeploying the
+  # immutable guard hook or touching router hook settings (the SEC-03 surface).
+  #
+  # The merkleTreeHook is deliberately NOT in this aggregation: it stays exactly
+  # where it is, reached through the guard hook, so the tree keeps advancing.
+  type: aggregationHook
+  hooks:
+    - type: protocolFee
+      owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+      beneficiary: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+      maxProtocolFee: "100000000000000000"
+      protocolFee: "0"
+    - type: interchainGasPaymaster
+      owner: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+      beneficiary: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+      oracleKey: "0xF031363A7FDdaFDcea062adc7421353A95F16420"
+      # Added to the 68,000 the routers already request via metadata. The
+      # destination side runs the guard ISM and guard accounting on top of the
+      # plain token handler, so the quote is padded rather than tight.
+      overhead:
+        sepolia: 150000
+        basesepolia: 150000
+      oracleConfig:
+        # gasPrice: observed destination gas price at configuration time.
+        # tokenExchangeRate: destination-native per KASH, 1e10 scale. KASH is a
+        # devnet token with no market price, so 1:1 is a declared assumption,
+        # not a measurement; revisit before any public testnet.
+        sepolia:
+          gasPrice: "1190122238"
+          tokenExchangeRate: "10000000000"
+        basesepolia:
+          gasPrice: "6000000"
+          tokenExchangeRate: "10000000000"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Declared so that `hyperlane core check` reports a clean diff and can therefore
